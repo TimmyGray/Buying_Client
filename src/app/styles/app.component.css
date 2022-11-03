@@ -1,0 +1,33 @@
+.headerstyle{
+
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size:large;
+    font-style:oblique;
+
+}
+
+.text-blue{
+
+    color:midnightblue;
+
+}
+
+.bg-yellow{
+
+    background-color:yellowgreen;
+
+}
+
+
+.bg-red{
+
+    background-color:palevioletred;
+
+}
+
+
+.btn-round{
+
+    border-radius:5px;
+
+}
