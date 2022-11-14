@@ -23,7 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/app/styles/styles.css"
             ],
             "scripts": []
           },
@@ -90,12 +90,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/app/styles/styles.css"
+              
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "11be703d-ff0d-4c87-b2f6-95f6b700598e"
   }
 }
