@@ -1,0 +1,97 @@
+<div fxLayout="column" class="text-center mg-side-5 center-style">
+  <div class="mat-title">In this section you can create your own wire</div>
+  <div fxLayout="column" name="formgroup" class="text-center">
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly">
+
+      <div fxLayout="column">
+
+        <mat-form-field class="min-width-150">
+          <mat-label>Wire's name</mat-label>
+          <input matInput type="text" [(ngModel)]="newBuy.name" name="buyname" />
+          <button *ngIf="newBuy.name" matSuffix (click)="newBuy.name=''" mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+      </div>
+
+      <div fxLayout="column">
+
+        <mat-form-field class="min-width-150">
+          <mat-label>Wire's length</mat-label>
+          <input matInput type="number" [(ngModel)]="wire.length" (ngModelChange)="allCost()" name="wirelenght"/>
+        </mat-form-field>
+
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly" class="mg-3">
+
+      <div fxLayout="column">
+
+        <mat-form-field class="mg-2">
+          <mat-label>Wire's type</mat-label>
+          <mat-select [(ngModel)] ="wiretype" (ngModelChange)="selectType(2)" name="wiret">
+            <mat-option selected value=""></mat-option>
+            <mat-option *ngFor="let coil of coils;let i=index" [value]="coil">{{coil}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+      <div fxLayout="column">
+
+        <mat-form-field class="mg-2">
+          <mat-label>First connector type</mat-label>
+          <mat-select [(ngModel)]="firstcontype" (ngModelChange)="selectType(0)" name="firstcon" >
+            <mat-option value="" selected></mat-option>
+            <mat-option *ngFor="let connector of connectors; let i=index" [value]="connector">{{connector}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+      <div fxLayout="column">
+
+        <mat-form-field class="mg-2">
+          <mat-label>Second connector type</mat-label>
+          <mat-select [(ngModel)] ="secondcontype" (ngModelChange)="selectType(1)" name="secondcon">
+            <mat-option value="" selected></mat-option>
+            <mat-option *ngFor="let connector of connectors; let i=index" [value]="connector">{{connector}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="center center">
+
+      <mat-form-field class="min-width-150">
+        <mat-label>Description(optional)</mat-label>
+        <textarea matInput [(ngModel)]="newBuy.description" name="buydescription"></textarea>
+        <button *ngIf="newBuy.description" matSuffix (click)="newBuy.description=''" mat-icon-button>
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+    </div>
+
+    <div fxLayout="column">
+      <div class="mat-title">Cost:{{cost}}</div>
+      <div>{{wire.type}},{{wire.firstcon}},{{wire.secondcon}}</div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly">
+
+      <div fxLayout="column">
+        <button mat-raised-button color="accent" (click)="clearAll()">Clear all</button>
+      </div>
+
+      <div fxLayout="column">
+        <button mat-raised-button color="primary" [disabled]="allgood"  (click)="addToCart()">Add to cart</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+

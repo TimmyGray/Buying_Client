@@ -1,30 +1,25 @@
-import { HttpClient } from '@angular/common/http';
-import { Message } from '../models/message';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators'
-import { HttpHeaders } from '@angular/common/http';
+import { Buy } from '../models/Buy';
 
 @Injectable()
 export class BuyService {
 
-  url: string = "https://localhost:7036";
-  errormsg: string = "";
+  private url: string = "https://localhost:7036/buys";
   constructor(private client: HttpClient) { }
 
-  GetMsg() {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    return this.client.get(this.url, { headers, observe: "body", responseType: "json" })
-
-  }
-
-  SendMsg(msg: Message) {
+  getBuys(): Observable<Buy[]> {
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.client.post(this.url + '/postmsg', msg as Message, { headers });
-    
+    return this.client.get<Buy[]>(this.url, { headers, observe: "body", responseType: "json" });
+
   }
+
+  
+
+  
 
 }

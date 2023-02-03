@@ -1,6 +1,66 @@
-<div class="bg-yellow">
 
-  <h1 class="headerstyle text-blue">{{message}}</h1>
-  <button class="btn-round bg-red" (click) ="SendMessage()" >Send</button>
+  <mat-toolbar  class="sticky-top" color="primary">
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+      <a routerLink="" mat-icon-button>
+        <mat-icon>cable</mat-icon>
+      </a>
 
-</div>
+      <span>Lovely Wires</span>
+
+      <div class="menu" fxShow="false" fxShow.lt-sm="true">
+
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+
+          <button routerLink="" mat-menu-item>
+            <mat-icon>shop</mat-icon>
+            <span>Main</span>
+          </button>
+          <button routerLink="/creating" mat-menu-item>
+            <mat-icon>settings input component</mat-icon>
+            <span>Create Wire</span>
+          </button>
+
+        </mat-menu>
+      </div>
+
+
+      <div class="navtabs" fxShow="true" fxHide.lt-sm="true">
+        <a mat-button routerLink="" checkpage routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Main</a>
+        <a mat-button routerLink="/creating" checkpage routerLinkActive="active">Create Wire </a>
+      </div>
+
+    </div>
+
+
+  </mat-toolbar>
+
+  <router-outlet></router-outlet>
+
+  <div #dtb  class="sticky-bot">
+    <mat-toolbar color="accent" id="dtb" class="baskettoolbar mg-t-2 fixedbot" (scroll)="scrolling($event)">
+
+      <div>
+
+        <button mat-button color="primary" class="large-icon" routerLink="/cart" checkpage routerLinkActive="active">
+          <mat-icon color="warn">shopping_cart</mat-icon>
+          Cart
+        </button>
+
+      </div>
+
+      <div class="down-toolbar-list">
+        <span class="item">Count:{{count}}</span>
+        <span class="item">Cost:{{cost | currency}}</span>
+      </div>
+
+    </mat-toolbar>
+  </div>
+
+
+
+
+

@@ -1,1 +1,195 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html, body { height: 100%; }
+body {
+  margin: 0%;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+
+.light-orange {
+  color: #f5f0ed;
+}
+.violet-bg{
+    background:violet;
+}
+
+.light-blue-bg {
+  background: #c6d0f5;
+}
+
+.light-yellow-bg {
+  background: #f7dfa1;
+}
+
+.light-grey-bg {
+  background: #ededed;
+}
+
+.divider{
+
+    border-right-width:10px;
+
+}
+
+.active {
+  background: #aabafa;
+  color:aquamarine;
+}
+
+.text-center{
+    text-align:center;
+}
+
+.min-height-93{
+    min-height:93vh !important;
+}
+
+.min-width-100{
+    min-width:20%;
+    max-width:100%;
+    width:100px;
+    
+}
+
+.min-width-150{
+    min-width:50%;
+    width:150px;
+    max-width:100%;
+}
+
+.form-width-500{
+    min-width:25%;
+    max-width:100%;
+    width:600px;
+}
+
+.text-style{
+
+    font-size:24px;
+    color:whitesmoke;
+}
+
+/*.mat-form-field {
+    width:100px;
+}
+*/
+.mat-card {
+  background: #f5f0ed;
+}
+.mat-card:hover {
+  background: #d9f7fa;
+  cursor: pointer;
+}
+
+
+.navtabs{
+    margin:2rem;
+}
+
+.baskettoolbar{
+   
+   z-index:100;
+   text-align:center;
+   justify-content:center;
+}
+
+.fixedbot{
+    position:fixed;
+    bottom:0;
+    z-index:2;
+   
+}
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  position: -webkit-sticky;
+}
+
+.sticky-bot {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  position: -webkit-sticky;
+}
+
+.large-icon{
+    transform:scale(1.5);
+    
+}
+  .large-icon:hover {
+    background: #aabafa;
+  }
+
+/*.buyslist {
+ display:flex;
+ justify-content:space-evenly;
+ margin:2rem;
+}
+*/
+.down-toolbar-list{
+    margin-left:3rem;
+}
+
+.item{
+    display:block;
+    
+  
+    color:rebeccapurple;
+}
+
+.inline-style{
+    display:inline-flex;
+}
+
+.between-style{
+    justify-content:space-between;
+}
+
+.mg-5{
+    margin:5rem;
+}
+
+.mg-3{
+    margin:3rem;
+}
+
+.mg-2{
+    margin:2rem;
+}
+
+.inline{
+    display:inline-block;
+}
+
+.mg-side-5{
+   margin-left:5rem;
+   margin-right:5rem;
+}
+
+.center-style{
+    justify-content:center;
+}
+
+.mg-b-2{
+
+    margin-bottom:2rem;
+
+}
+
+.mg-t-2{
+    margin-top:2rem;
+}
+
+.hidden{
+    display:none;
+}
+
+.p-side-2{
+    padding-left:2rem;
+    padding-right:2rem;
+}

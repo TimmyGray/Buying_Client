@@ -1,0 +1,125 @@
+<div>
+  <mat-grid-list gutterSize="0" class="light-blue-bg" rowHeight="70px" cols="5">
+    <mat-grid-tile>
+      <button color="primary" mat-icon-button>
+        <mat-icon>sort</mat-icon>
+      </button>
+
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field appearance="fill">
+        <mat-label>Filter:</mat-label>
+        <mat-select>
+
+          <mat-option></mat-option>
+          <mat-option value="">First connector type</mat-option>
+          <mat-option value="">Second connector type</mat-option>
+          <mat-option value="">Length</mat-option>
+          <mat-option value="">Wire type</mat-option>
+          <mat-option value="">Price</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field appearance="fill">
+        <mat-label>Filter:</mat-label>
+        <mat-select>
+
+          <mat-option></mat-option>
+          <mat-option value="">First connector type</mat-option>
+          <mat-option value="">Second connector type</mat-option>
+          <mat-option value="">Length</mat-option>
+          <mat-option value="">Wire type</mat-option>
+          <mat-option value="">Price</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field appearance="fill">
+        <mat-label>Filter:</mat-label>
+        <mat-select>
+
+          <mat-option></mat-option>
+          <mat-option value="">First connector type</mat-option>
+          <mat-option value="">Second connector type</mat-option>
+          <mat-option value="">Length</mat-option>
+          <mat-option value="">Wire type</mat-option>
+          <mat-option value="">Price</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <button mat-stroked-button color="warn">Apply sorting</button>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div fxLayout="column"  fxLayoutGap="20px" class="mg-t-2">
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly">
+
+      <mat-card *ngFor="let buy of listofbuys; let i = index" >
+        <div hidden>{{i}}</div>
+        <mat-card-header (click)="openFullDes(buy)">
+          <mat-card-title>{{buy.name}}</mat-card-title>
+          <mat-card-subtitle>{{buy.cost | currency}}</mat-card-subtitle>
+          <img mat-card-sm-image src="../../../assets/--images/testpic.jpg" />
+        </mat-card-header>
+        <mat-card-content (click)="openFullDes(buy)">
+          <p>First connector:<span [textContent]="parsingItem(buy.item,0)"></span></p>
+          <p>Second connector:<span [textContent]="parsingItem(buy.item,1)"></span></p>
+          <p>Wire's type:<span [textContent]="parsingItem(buy.item,2)"></span></p>
+          <p>Lenght:<span [textContent]="parsingItem(buy.item,3)"></span>m</p>
+        </mat-card-content>
+        <mat-card-actions class="between-style">
+          <button mat-stroked-button (click)="addToCart(buy)" color="primary">add to cart</button>
+          <div class="inline-style">
+            <button mat-icon-button (click)="addToCart(buy)">
+              <mat-icon color="accent">add</mat-icon>
+            </button>
+            <button mat-icon-button (click)="removeFromCart(buy)">
+              <mat-icon color="warn">remove</mat-icon>
+            </button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+
+
+    </div>
+    
+  </div>
+</div>
+
+
+<!--<ng-template #buycardtemplate>-->
+
+  <!--<mat-card (click)="openFullDes()">
+    <mat-card-header>
+      <mat-card-title>{{buy.name}}</mat-card-title>
+      <mat-card-subtitle>{{buy.cost}}</mat-card-subtitle>
+      <img mat-card-sm-image src="../../../assets/--images/testpic.jpg" />
+    </mat-card-header>
+    <mat-card-content>
+      <p>First connector</p>
+      <p>Second connector</p>
+      <p>Lenght</p>
+      <p>Wire's type</p>
+      <p>{{buy.count}}</p>
+    </mat-card-content>
+    <mat-card-actions class="between-style">
+      <button mat-stroked-button color="primary">add to cart</button>
+      <div class="inline-style">
+        <button mat-icon-button>
+          <mat-icon color="accent">add</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon color="warn">remove</mat-icon>
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+
+
+</ng-template>-->
