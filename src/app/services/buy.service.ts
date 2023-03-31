@@ -18,6 +18,15 @@ export class BuyService {
 
   }
 
+  getImage(id: string,type:string): Observable<Blob> {
+
+    console.log(id);
+    console.log(type);
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": `image/${type}` });
+    return this.client.get(`${this.url}/getimage/${id}`, { headers: httpheaders, responseType: "blob" });
+
+  }
+
   
 
   

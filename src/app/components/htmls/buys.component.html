@@ -65,7 +65,7 @@
         <mat-card-header (click)="openFullDes(buy)">
           <mat-card-title>{{buy.name}}</mat-card-title>
           <mat-card-subtitle>{{buy.cost | currency}}</mat-card-subtitle>
-          <img mat-card-sm-image src="../../../assets/--images/testpic.jpg" />
+          <img mat-card-sm-image [src]="listofimages[i]" />
         </mat-card-header>
         <mat-card-content (click)="openFullDes(buy)">
           <p>First connector:<span [textContent]="parsingItem(buy.item,0)"></span></p>

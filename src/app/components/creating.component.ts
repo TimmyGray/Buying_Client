@@ -9,6 +9,7 @@ import { Connector } from '../models/connector';
 import { CoilService } from '../services/coil.service';
 import { Iitem } from '../models/item.interface';
 import { ClientService } from '../services/client.service';
+import { Image } from '../models/image';
 
 
 @Component({
@@ -73,7 +74,7 @@ export class CreatingComponent implements OnInit {
 
   initBuy():Buy {
 
-    return new Buy("", "", "", 0, "", 1);
+    return new Buy("", "", "", 0, "", 1, new Image("", "", 0, "", new ArrayBuffer(0)));
 
   }
 
@@ -86,46 +87,59 @@ export class CreatingComponent implements OnInit {
 
   getConnectors() {
 
-    this.connectorserv.getConnectors().subscribe((data: string[]) => {
+    this.connectorserv.getConnectors().subscribe({
+      next: ((value: string[]) => {
 
-      console.log(data);
-      this.connectors = data;
+        console.log(value);
+        this.connectors = value;
 
-    },
-      (e) => {
+      }),
+      error: ((e) => {
 
-        console.log(e);
+        console.error(e);
 
-      });
+      })
+
+    });
 
   }
 
   getPrices() {
 
-    this.priceserv.getPrices().subscribe((data: Price[]) => {
+    this.priceserv.getPrices().subscribe({
+      next: ((value: Price[]) => {
 
-      console.log(data);
-      this.prices = data;
+        console.log(value);
+        this.prices = value;
 
-    },
-      (e) => {
+      }),
 
-      console.log(e);
+      error: (e => {
 
+        console.error(e);
+
+      })
+      
     });
 
   }
 
   getCoils() {
 
-    this.coilserv.getCoils().subscribe((data: string[]) => {
+    this.coilserv.getCoils().subscribe({
+      next: ((value: string[]) => {
 
-      console.log(data);
-      this.coils = data;
+        console.log(value);
+        this.coils = value;
 
-    }, (e) => {
+      }),
 
-      console.log(e);
+      error: ((e) => {
+
+        console.error(e);
+
+      })
+
 
     });
 

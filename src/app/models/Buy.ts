@@ -1,3 +1,5 @@
+import {Image } from './image'
+
 export class Buy{
     
   constructor(
@@ -6,6 +8,7 @@ export class Buy{
     public description: string,
     public cost: number,
     public item: string,
-    public count: number) { }
+    public count: number,
+    public image:Image) { }
 
 }
