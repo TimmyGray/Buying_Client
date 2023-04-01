@@ -1,12 +1,12 @@
 <div>
 
   <h2 mat-dialog-title>
-    {{data.name}}
+    {{data.curbuy.name}}
   </h2>
 
   <mat-dialog-content>
-    <img width="256" height="256" src="../../../assets/--images/testpic.jpg" />
-    <p>{{data.description}}</p>
+    <img width="256" height="256" [src]="data.curimage" />
+    <p>{{data.curbuy.description}}</p>
   </mat-dialog-content>
 
   <mat-dialog-actions>

@@ -31,22 +31,6 @@ export class BuysComponent implements OnInit {
   ngOnInit() {
 
     this.getBuys();
-    //this.buyservice.getImage("6420243eca7c4d8337228b9f", "jpeg").subscribe({
-    //  next: ((value) => {
-
-    //    console.log(value);
-    //    console.log("fsdfsdf");
-
-    //  }),
-
-    //  error: (e => {
-
-    //    console.error(e);
-
-    //  })
-      
-      
-    //});
 
   }
 
@@ -80,16 +64,16 @@ export class BuysComponent implements OnInit {
     let parseitem: string[] = item.split(";");
     switch (field) {
       case 0:
-
-        return parseitem[0];
+        //parseitem[0].substring(0, 20)+"...";
+        return parseitem[0].substring(0, 40) + "...";
 
       case 1:
 
-        return parseitem[1];
+        return parseitem[1].substring(0, 40) + "...";
 
       case 2:
 
-        return parseitem[2];
+        return parseitem[2].substring(0, 30) + "...";
 
       case 3:
 
@@ -119,10 +103,12 @@ export class BuysComponent implements OnInit {
 
   }
 
-  openFullDes(buy: Buy) {
+  openFullDes(buy: Buy, index:number) {
 
     let configure: MatDialogConfig = new MatDialogConfig();
-    configure.data = buy;
+    let data = { "curbuy": buy, "curimage": this.listofimages[index] };
+    configure.data = data;
+    
     let dialogRef = this.dialog.open(FullDescriptionComponent, configure);
 
   }
