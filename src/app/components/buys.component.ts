@@ -5,6 +5,7 @@ import { FullDescriptionComponent } from '../components/fulldescription.componen
 import { config, from, map, Subscription, switchMap, of, take, Observable, delay, exhaustMap, switchAll, exhaust, concatMap } from 'rxjs';
 import { BuyService } from '../services/buy.service';
 import { ClientService } from '../services/client.service';
+import { ParsingService } from '../services/parsing.service';
 
 @Component({
   selector: 'app-buys',
@@ -21,7 +22,8 @@ export class BuysComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private readonly buyservice: BuyService,
-    private readonly clientservice: ClientService) {
+    private readonly clientservice: ClientService,
+    private readonly parsingservice:ParsingService) {
 
     this.listofbuys = new Array<Buy>();
     this.parseitem = new Array<string>();
@@ -51,7 +53,7 @@ export class BuysComponent implements OnInit {
       next: ((value) => {
 
         this.showBuyImage(value);
-       
+
       })
 
     })
@@ -61,23 +63,22 @@ export class BuysComponent implements OnInit {
 
   parsingItem(item: string, field: number): string | undefined {
 
-    let parseitem: string[] = item.split(";");
     switch (field) {
       case 0:
-        //parseitem[0].substring(0, 20)+"...";
-        return parseitem[0].substring(0, 40) + "...";
+
+        return this.parsingservice.parseItem(item, ";")[0];
 
       case 1:
 
-        return parseitem[1].substring(0, 40) + "...";
+        return this.parsingservice.parseItem(item, ";")[1];
 
       case 2:
 
-        return parseitem[2].substring(0, 30) + "...";
+        return this.parsingservice.parseItem(item, ";")[2];
 
       case 3:
 
-        return parseitem[3];
+        return this.parsingservice.parseItem(item, ";")[3];
       
     }
 
@@ -121,6 +122,8 @@ export class BuysComponent implements OnInit {
     imagereader.onload = (() => {
 
       this.listofimages.push(imagereader.result as string);
+      this.listofbuys[this.listofimages.length - 1].image.data = imagereader.result as string;
+
     });
     imagereader.onerror = (e => {
       console.error(e);

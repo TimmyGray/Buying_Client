@@ -74,7 +74,7 @@ export class CreatingComponent implements OnInit {
 
   initBuy():Buy {
 
-    return new Buy("", "", "", 0, "", 1, new Image("", "", 0, "", new ArrayBuffer(0)));
+    return new Buy("", "", "", 0, "", 1, new Image("", "", 0, "",""));
 
   }
 

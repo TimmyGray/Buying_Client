@@ -37,7 +37,7 @@
 
   <div fxLayout="row wrap" class="center-xs" fxLayoutAlign="space-evenly" fxLayoutGap="20px" fxLayout.xs="column" >
 
-    <mat-card class="mg-2 width-200 height-400" *ngFor="let buy of listofbuys; let i = index">
+    <mat-card class="mg-2 width-300 height-350" *ngFor="let buy of listofbuys; let i = index">
 
       <div hidden>{{i}}</div>
       <mat-card-header (click)="openFullDes(buy,i)">
@@ -46,9 +46,9 @@
         <img mat-card-sm-image [src]="listofimages[i]" />
       </mat-card-header>
       <mat-card-content (click)="openFullDes(buy,i)">
-        <p>First connector:<span [textContent]="parsingItem(buy.item,0)"></span></p>
-        <p>Second connector:<span [textContent]="parsingItem(buy.item,1)"></span></p>
-        <p>Wire's type:<span [textContent]="parsingItem(buy.item,2)"></span></p>
+        <p>First side connectors: <span [textContent]="parsingItem(buy.item,0)|slice:0:40"></span>...</p>
+        <p>Second side connectors: <span [textContent]="parsingItem(buy.item,1)|slice:0:40"></span>...</p>
+        <p>Wire's type:<span [textContent]="parsingItem(buy.item,2)|slice:0:30"></span>...</p>
         <p>Lenght:<span [textContent]="parsingItem(buy.item,3)"></span>m</p>
       </mat-card-content>
       <mat-card-actions class="between-style">
@@ -69,34 +69,3 @@
 
 </div>
 
-
-
-<!--<ng-template #buycardtemplate>-->
-<!--<mat-card (click)="openFullDes()">
-    <mat-card-header>
-      <mat-card-title>{{buy.name}}</mat-card-title>
-      <mat-card-subtitle>{{buy.cost}}</mat-card-subtitle>
-      <img mat-card-sm-image src="../../../assets/--images/testpic.jpg" />
-    </mat-card-header>
-    <mat-card-content>
-      <p>First connector</p>
-      <p>Second connector</p>
-      <p>Lenght</p>
-      <p>Wire's type</p>
-      <p>{{buy.count}}</p>
-    </mat-card-content>
-    <mat-card-actions class="between-style">
-      <button mat-stroked-button color="primary">add to cart</button>
-      <div class="inline-style">
-        <button mat-icon-button>
-          <mat-icon color="accent">add</mat-icon>
-        </button>
-        <button mat-icon-button>
-          <mat-icon color="warn">remove</mat-icon>
-        </button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
-
-
-</ng-template>-->

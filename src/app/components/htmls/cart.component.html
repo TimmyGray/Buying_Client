@@ -25,15 +25,15 @@
             <li *ngFor="let newbuy of buysfororder;let i=index" class="mg-b-2">
               <div fxLayout="row" fxLayoutGap="10px">
                 <div name="buy" fxLayout="column">
-                  <mat-card>
+                  <mat-card class="width-300 height-350">
                     <mat-card-header>
                       <mat-card-title>{{newbuy.name}}</mat-card-title>
                       <mat-card-subtitle>Price: {{newbuy.cost | currency}}</mat-card-subtitle>
-                      <img mat-card-sm-image src="../../../assets/--images/testpic.jpg" />
+                      <img mat-card-sm-image [src]="newbuy.image.data" />
                     </mat-card-header>
                     <mat-card-content (click)="setBuy(newbuy,checks.subchecks[i])">
-                      <p>First connector: <span [textContent]="parsingItem(newbuy.item,0)"></span></p>
-                      <p>Second connector: <span [textContent]="parsingItem(newbuy.item,1)"></span></p>
+                      <p>First connector: <span [textContent]="parsingItem(newbuy.item,0)|slice:0:30"></span>...</p>
+                      <p>Second connector: <span [textContent]="parsingItem(newbuy.item,1)|slice:0:30"></span>...</p>
                       <p>Wire's type: <span [textContent]="parsingItem(newbuy.item,2)"></span></p>
                       <p>Lenght:<span [textContent]="parsingItem(newbuy.item,3)"></span></p>
                       <p>count: {{newbuy.count}}</p>
@@ -47,7 +47,7 @@
                           <mat-icon color="warn">remove</mat-icon>
                         </button>
                       </div>
-                      <button mat-stroked-button color="primary" (click)="removeFromCart(newbuy)">remove</button>
+                      <button mat-stroked-button color="primary" (click)="removeFromCart(newbuy)">remove from cart</button>
                     </mat-card-actions>
                   </mat-card>
 

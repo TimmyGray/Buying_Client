@@ -1,7 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
+:root {
+
+    --main-1:1rem;
+    --main-2:2rem;
+    --main-3:3rem;
+    --main-50:50px;
+    --main-75:75px;
+    --main-100:100px;
+    --main-150:150px;
+    --main-200:200px;
+    --main-250:250px;
+    --main-300:300px;
+    --main-350:350px;
+    --main-400:400px;
+
+}
+
 html, body { height: 100%; }
+
 body {
   margin: 0%;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -196,22 +214,32 @@ body {
 
 .width-200{
 
-    width:200px;
+    width:var(--main-200);
 
+}
+
+.width-300{
+
+    width:var(--main-300);
+}
+
+.width-350{
+
+    width:var(--main-350);
 }
 
 .height-300{
 
-    height:300px;
+    height:var(--main-300);
 
 }
 
 .height-350 {
-  height: 350px;
+  height: var(--main-350);
 }
 
 .height-400 {
-  height: 400px;
+  height: var(--main-400);
 }
 
 @media (max-width:599px) {
@@ -222,3 +250,12 @@ body {
 
 } 
 
+.mg-l-2{
+
+    margin-left:2rem;
+
+}
+
+.mg-l-5 {
+  margin-left: 5rem;
+}

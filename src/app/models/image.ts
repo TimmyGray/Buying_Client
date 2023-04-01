@@ -6,7 +6,7 @@ export class Image {
     public name: string,
     public size: number,
     public type: string,
-    public data: ArrayBuffer) {
+    public data: string) {
 
     }
 

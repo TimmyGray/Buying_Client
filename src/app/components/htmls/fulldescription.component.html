@@ -6,6 +6,21 @@
 
   <mat-dialog-content>
     <img width="256" height="256" [src]="data.curimage" />
+    <div fxLayout="row" fxLayoutAlign="space-between" class="mg-b-2">
+      <div fxLayout="column">
+        <p>First side connectors:</p>
+        <div *ngFor="let conn of firstconn; let i=index">{{i+1}}.{{conn}}</div>
+      </div>
+      <div fxLayout="column" class="mg-l-2">
+        <p>Second side connectors:</p>
+        <div *ngFor="let conn of secondconn; let i=index">{{i+1}}.{{conn}}</div>
+      </div>
+
+    </div>
+    <div fxLayout="row">
+      <p>Length:</p>
+      <p>{{parseditem[3]}}, m</p>
+    </div>
     <p>{{data.curbuy.description}}</p>
   </mat-dialog-content>
 

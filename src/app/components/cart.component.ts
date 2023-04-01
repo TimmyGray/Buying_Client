@@ -8,6 +8,7 @@ import { ClientService } from '../services/client.service';
 import { ICartBuy } from '../models/cartbuy.interface';
 import { OrderService } from '../services/order.service';
 import { AccountService } from '../services/account.service';
+import { ParsingService } from '../services/parsing.service';
 
 @Component({
   selector: "app-cart",
@@ -29,7 +30,8 @@ export class CartComponent implements OnInit {
   constructor(
     private readonly clientservice: ClientService,
     private readonly orderservice: OrderService,
-    private readonly accservice: AccountService) {
+    private readonly accservice: AccountService,
+    private readonly parsingservice: ParsingService) {
     this.client = new Client("", "", "");
     this.buysfororder = new Set<Buy>();
     this.subscription = new Subscription();
@@ -193,23 +195,22 @@ export class CartComponent implements OnInit {
 
   parsingItem(item: string, field: number): string | undefined {
 
-    let parseitem: string[] = item.split(";");
     switch (field) {
       case 0:
 
-        return parseitem[0];
+        return this.parsingservice.parseItem(item,";")[0];
 
       case 1:
 
-        return parseitem[1];
+        return this.parsingservice.parseItem(item,";")[1];
 
       case 2:
 
-        return parseitem[2];
+        return this.parsingservice.parseItem(item, ";")[2];
 
       case 3:
 
-        return parseitem[3];
+        return this.parsingservice.parseItem(item, ";")[3];
 
     }
 
