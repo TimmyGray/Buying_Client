@@ -18,7 +18,7 @@ import { ParsingService } from '../services/parsing.service';
 })
 export class CartComponent implements OnInit {
 
-  private subscription: Subscription;
+  //private subscription: Subscription;
   client: Client;
   cost: number = 0;
   buysfororder: Set<Buy>;
@@ -34,7 +34,7 @@ export class CartComponent implements OnInit {
     private readonly parsingservice: ParsingService) {
     this.client = new Client("", "", "");
     this.buysfororder = new Set<Buy>();
-    this.subscription = new Subscription();
+    //this.subscription = new Subscription();
     this.checks = { name: "Set All", set: true, subchecks: new Array<ICartBuy>() };
     this.allset = true;
     this.order = new Order("", this.client, "", new Date(), OrderStatus.under_consideration, new Array<Buy>());
@@ -59,7 +59,7 @@ export class CartComponent implements OnInit {
 
   ngOnDestroy() {
 
-    this.subscription.unsubscribe();
+    //this.subscription.unsubscribe();
 
   }
 

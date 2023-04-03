@@ -129,7 +129,6 @@ export class BuysComponent implements OnInit {
       console.error(e);
 
     });
-    //let image: File = new File(buy.image.data, buy.image.name);
 
     
   }

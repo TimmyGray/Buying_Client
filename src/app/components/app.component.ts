@@ -17,13 +17,13 @@ export class AppComponent implements OnInit {
   count: number = 0;
   cost: number = 0;
 
-  getCount(count: number) {
+  private getCount(count: number) {
 
     this.count = count;
 
   }
 
-  getCost(cost: number) {
+  private getCost(cost: number) {
 
     this.cost = cost;
 
