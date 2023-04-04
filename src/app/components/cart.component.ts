@@ -3,7 +3,8 @@ import { Client } from '../models/client';
 import { Buy } from '../models/Buy';
 import { Order } from '../models/order';
 import { OrderStatus } from '../models/enums';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { map, switchMap, exhaustMap } from 'rxjs/operators';
 import { ClientService } from '../services/client.service';
 import { ICartBuy } from '../models/cartbuy.interface';
 import { OrderService } from '../services/order.service';
@@ -217,60 +218,28 @@ export class CartComponent implements OnInit {
     return undefined;
   }
 
-  async postClient(): Promise<Client | undefined> {
-
-    return await this.accservice.postClient(this.client).toPromise()
-      .then(data => {
-
-      console.log(data);
-      return data as Client;
-
-      })
-      .catch(e => {
-
-      console.log(e);
-      return undefined;
-
-    });
-
-  }
-
-  async postOrder(): Promise<Order | undefined> {
-
-    return await this.orderservice.postOrder(this.order).toPromise()
-      .then(data => {
-
-        console.log(data);
-        return data as Order;
-
-      })
-      .catch(e => {
-
-        console.log(e);
-        return undefined;
-
-      });
-
-  }
-
-  async makeOrder() {
+  makeOrder() {
 
     if (this.client.name != "" && this.client.email!="") {
 
       if (this.buysfororder.size != 0) {
 
-        var newclient = await this.postClient();
-        console.log(newclient);
+        this.accservice.postClient(this.client).pipe(
 
-        if (newclient != undefined) {
+          map(client => {
 
-          this.order.client = newclient;
-          this.order.buys = Array.from(this.buysfororder);
+            this.order.client = client;
+            this.order.buys = Array.from(this.buysfororder);
+            return this.order;
 
-          var order = await this.postOrder();
+          }),
 
-          if (order != undefined) {
+          exhaustMap(order => this.orderservice.postOrder(order))
 
+        ).subscribe({
+          next: (order => {
+
+            console.log(order);
             console.log("Заказ создан, подробности придут на указанный email");
             alert("Заказ создан, подробности придут на указанный email");
 
@@ -278,17 +247,22 @@ export class CartComponent implements OnInit {
             this.clientservice.getListOfBuys();
             this.allCost(false);
 
-          }
 
+          }),
+          error: (error => {
 
-        }
+            console.error(error);
+            alert("Что-то пошло не так=(((Заказ создан не был");
+
+          })
+
+        });
 
       }
       else {
 
         console.log("У вас нет покупок");
         alert("У вас нет покупок");
-
 
       }
 

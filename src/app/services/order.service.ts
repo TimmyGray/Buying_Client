@@ -24,10 +24,10 @@ export class OrderService {
 
   }
 
-  postOrder(order: Order): Observable<any> {
+  postOrder(order: Order): Observable<Order> {
 
     const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
-    return this.httpclient.post<any>(this.url, JSON.stringify(order), { headers: httpheaders });
+    return this.httpclient.post<Order>(this.url, JSON.stringify(order), { headers: httpheaders });
 
   }
 

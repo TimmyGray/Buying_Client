@@ -29,7 +29,7 @@
                     <mat-card-header>
                       <mat-card-title>{{newbuy.name}}</mat-card-title>
                       <mat-card-subtitle>Price: {{newbuy.cost | currency}}</mat-card-subtitle>
-                      <img mat-card-sm-image [src]="newbuy.image.data" />
+                      <img mat-card-sm-image [src]="newbuy.image.data"  alt="../../../assets/--images/testpic.jpg"/>
                     </mat-card-header>
                     <mat-card-content (click)="setBuy(newbuy,checks.subchecks[i])">
                       <p>First connector: <span [textContent]="parsingItem(newbuy.item,0)|slice:0:30"></span>...</p>
