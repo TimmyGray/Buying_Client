@@ -1,2 +1,0 @@
-D:\My_Programs\Buying_Client\obj\Debug\Staff_buying_client.esproj.SuggestedBindingRedirects.cache
-D:\My_Programs\Buying_Client\obj\Debug\Staff_buying_client.esproj.CoreCompileInputs.cache
