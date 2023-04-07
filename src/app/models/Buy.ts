@@ -8,6 +8,7 @@ export class Buy{
     public description: string,
     public cost: number,
     public item: string,
+    public itemid: string,
     public count: number,
     public image:Image) { }
 

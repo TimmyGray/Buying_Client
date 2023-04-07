@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild,ElementRef,AfterViewInit, OnDestroy } from '@angular/core';
 import { Buy } from '../models/Buy';
 import { CoreNumber } from '../models/enums';
 import { Price } from '../models/price';
@@ -10,6 +10,10 @@ import { CoilService } from '../services/coil.service';
 import { Iitem } from '../models/item.interface';
 import { ClientService } from '../services/client.service';
 import { Image } from '../models/image';
+import { Coil } from '../models/coil';
+import { exhaustMap, filter, from, fromEvent, map,of, Observable, Subject, Subscription } from 'rxjs';
+import { MatSelect } from '@angular/material/select';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
@@ -17,23 +21,34 @@ import { Image } from '../models/image';
   templateUrl: `./htmls/creating.component.html`,
   providers: [ConnetorService, PriceService, CoilService]
 })
-export class CreatingComponent implements OnInit {
+export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild("addToCart", { static: false })
+  addtocartbut: MatButton | undefined;
+
+  private fullprice: Subject<number> = new Subject<number>();
+  fullprice$ = this.fullprice.asObservable();
+  addtocart$: Subscription | undefined;
+
   newBuy: Buy;
   wire: Wire;
 
-  wiretype: string = "";
-  firstcontype: string = "";
-  secondcontype: string = "";
+  wirecoil: Coil;
 
   cost: number = 0;
-  firstconprice: number = 0;
-  secondconprice: number = 0;
+  firstconnprice: number[];
+  sumfirstprice: number = 0;
+  sumsecondprice: number = 0;
+  secondconnprice: number[];
   coilprice: number = 0;
+  curnumber: number = 0;
   allgood: boolean = true;
+  addbut: HTMLElement|null;
 
-  connectors: string[];
+  connectors: Connector[];
+  firstsideconn: Connector[];
+  secondsideconn: Connector[];
   prices: Price[];
-  coils: string[];
+  coils: Coil[];
 
   constructor(
     private readonly connectorserv: ConnetorService,
@@ -43,10 +58,15 @@ export class CreatingComponent implements OnInit {
 
     this.newBuy = this.initBuy();
     this.wire = this.initWire();
-    this.connectors = new Array<string>();
+    this.connectors = new Array<Connector>();
     this.prices = new Array<Price>();
-    this.coils = new Array<string>();
-    
+    this.coils = new Array<Coil>();
+    this.firstsideconn = new Array();
+    this.secondsideconn = new Array();
+    this.firstconnprice = new Array();
+    this.secondconnprice = new Array();
+    this.wirecoil = this.initCoil();
+    this.addbut = document.getElementById("addbut");
   }
 
   ngOnInit() {
@@ -54,6 +74,54 @@ export class CreatingComponent implements OnInit {
     this.getConnectors();
     this.getPrices();
     this.getCoils();
+    this.fullprice$.subscribe({ next: (price) => { this.cost = price; } })
+    
+    
+  }
+
+  ngAfterViewInit() {
+
+    
+
+    //this.addtocart$ = fromEvent(this.addbut as HTMLElement, 'click').pipe(
+
+    //  map(() => {
+    //    if (this.newBuy.name == "") {
+    //      alert("You must fill name field");
+    //      return false;
+    //    }
+    //    return true;
+    //  }),
+    //  filter(value => value == true),
+    //  map(() => {
+
+    //    this.newBuy.item = this.makeItemBuy(this.wire, this.wirecoil);
+    //    this.newBuy.cost = this.cost;
+
+    //  }),
+      
+
+    //).subscribe({
+    //  next: (() => {
+
+    //    this.clientserv.addBuy(this.newBuy);
+    //    this.clearAll();
+
+    //  }),
+
+    //  error: (e => {
+
+    //    console.error(e);
+
+    //  })
+      
+    //});
+
+  }
+
+  ngOnDestroy() {
+
+    this.fullprice.unsubscribe();
 
   }
 
@@ -61,26 +129,36 @@ export class CreatingComponent implements OnInit {
 
     this.newBuy = this.initBuy();
     this.wire = this.initWire();
-    this.wiretype = "";
-    this.firstcontype = "";
-    this.secondcontype = "";
+    this.wirecoil = this.initCoil();
 
     this.cost = 0;
-    this.firstconprice = 0;
-    this.secondconprice = 0;
+    this.firstconnprice = new Array();
+    this.secondconnprice = new Array();
     this.coilprice = 0;
 
   }
 
-  initBuy():Buy {
+  private initBuy():Buy {
 
-    return new Buy("", "", "", 0, "", 1, new Image("", "", 0, "",""));
+    return new Buy("", "", "", 0, "","", 1, new Image("", "", 0, "",""));
 
   }
 
-  initWire() {
+  private initWire(): Wire {
 
-    return new Wire("", "", 0, "", "", "");
+    return new Wire("", "", 0, "", new Array(), new Array(), 0);
+
+  }
+
+  private initConnector(): Connector {
+
+    return new Connector("", "", "", 0);
+
+  }
+
+  private initCoil(): Coil {
+
+    return new Coil("", "", "", 0);
 
   }
 
@@ -88,10 +166,10 @@ export class CreatingComponent implements OnInit {
   getConnectors() {
 
     this.connectorserv.getConnectors().subscribe({
-      next: ((value: string[]) => {
+      next: ((connectors) => {
 
-        console.log(value);
-        this.connectors = value;
+        console.log(connectors);
+        this.connectors = connectors;
 
       }),
       error: ((e) => {
@@ -107,10 +185,10 @@ export class CreatingComponent implements OnInit {
   getPrices() {
 
     this.priceserv.getPrices().subscribe({
-      next: ((value: Price[]) => {
+      next: ((prices) => {
 
-        console.log(value);
-        this.prices = value;
+        console.log(prices);
+        this.prices = prices;
 
       }),
 
@@ -127,10 +205,10 @@ export class CreatingComponent implements OnInit {
   getCoils() {
 
     this.coilserv.getCoils().subscribe({
-      next: ((value: string[]) => {
+      next: ((coils) => {
 
-        console.log(value);
-        this.coils = value;
+        console.log(coils);
+        this.coils = coils;
 
       }),
 
@@ -145,97 +223,207 @@ export class CreatingComponent implements OnInit {
 
   }
 
-  findPrice(item:string):number {
+  //private get addToCartBut(): HTMLElement {
 
-    let splititem: string[] = item.split(",");
-    let cost: number = 0;
+  //  return this.addtocartbut?.nativeElement;
 
-    this.prices.forEach(p => {
-      console.log(`price : ${p.itemofprice.name},${p.itemofprice.type}-${splititem[0]},${splititem[1]}`);
-      if (p.itemofprice.name == splititem[0] && p.itemofprice.type == splititem[1]) {
+  //}
 
-        console.log(p.cost);
-        cost = p.cost;
-        
-      }
+  findPrice(item: Iitem): number {
 
-    });
+    let price = this.prices.find(p => p.itemofprice._id == item._id)?.cost;
 
-    return cost;
-  }
+    if (price) {
 
-  allCost() {
+      return price;
 
-    console.log(`first:${this.firstconprice}\nsecond:${this.secondconprice}\ncoil:${this.coilprice}\nlength:${this.wire.length}`)
-    let allcost: number = this.firstconprice + this.secondconprice + (this.wire.length * this.coilprice);
-    console.log(allcost);
-    this.cost = allcost;
-    this.checkAllgood();
-
-  }
-
-  selectType(type: number) {
-
-    switch (type) {
-
-      case 0: {
-
-        this.wire.firstcon = this.firstcontype.replace("-", ",");
-        this.firstconprice = this.findPrice(this.wire.firstcon);
-        console.log(this.firstconprice);
-
-        break;
-      }
-
-      case 1: {
-
-        this.wire.secondcon = this.secondcontype.replace("-", ",");
-        this.secondconprice = this.findPrice(this.wire.secondcon);
-        console.log(this.secondconprice);
-
-        break;
-
-      }
-
-      case 2: {
-
-        this.wire.type = this.wiretype.replace("-", ",");
-        this.coilprice = this.findPrice(this.wire.type);
-        console.log(this.coilprice);
-
-        break;
-      }
-       
     }
 
-    this.allCost();
-        
+    return 0;
+   
   }
 
-  addToCart() {
 
-    this.newBuy.cost = this.cost;
-    this.newBuy.item = `${this.wire.firstcon};${this.wire.secondcon};${this.wire.type};${this.wire.length}`;
+  checkAllgood():boolean {
 
-    let buy: Buy = Object.assign({}, this.newBuy);
+    if (this.wire.numberofconnectors <= 0) {
+      console.log("Must be more than 0 connectors");
+      return true;
+    }
 
-    console.log(buy);
-    this.clientserv.addBuy(buy);
+    for (let conn of this.wire.firstconn) {
+
+      if (conn._id == "") {
+        console.log("Not of all first side connectors selected")
+        return true;
+      }
+
+    }
+
+    for (let conn of this.wire.secondconn) {
+
+      if (conn._id == "") {
+        console.log("Not of all second side connectors selected")
+        return true;
+      }
+
+    }
+
+    return false;
+   
 
   }
 
-  checkAllgood() {
+  changeNumberOfConn() {
 
-    if (this.firstconprice != 0 && this.secondconprice != 0 && this.coilprice != 0 && this.wire.length != 0) {
+    if (this.wire.numberofconnectors>=0) {
 
-      this.allgood = false;
+      let temp: number = this.curnumber;
+      if (this.curnumber < this.wire.numberofconnectors) {
+
+        while (temp < this.wire.numberofconnectors) {
+
+          this.wire.firstconn.push(this.initConnector());
+          this.wire.secondconn.push(this.initConnector());
+
+          temp++;
+        }
+
+      }
+      if (this.curnumber > this.wire.numberofconnectors) {
+
+        while (temp > this.wire.numberofconnectors) {
+
+          this.wire.firstconn.pop();
+          this.wire.secondconn.pop();
+          this.firstconnprice.pop();
+          this.secondconnprice.pop();
+          temp--;
+
+        }
+
+      }
+
+      this.curnumber = this.wire.numberofconnectors;
+      this.allgood = this.checkAllgood();
+
+
+    }
+    //else {
+    //  this.wire.numberofconnectors = 0;
+    //}
+
+  }
+
+  changeConnector( i: number, isFirstSide: boolean) {
+
+    if (isFirstSide) {
+
+      let conn = Object.assign({}, this.firstsideconn[i]);
+      this.wire.firstconn[i] = conn as unknown as Connector;
+
+      this.firstconnprice[i] = this.findPrice(conn);
+
+      this.sumfirstprice = this.calcConnSum(this.firstconnprice);
 
     }
     else {
 
-      this.allgood = true;
+      let conn = Object.assign({}, this.secondsideconn[i]);
+      this.wire.secondconn[i] = conn as unknown as Connector;
+
+      this.secondconnprice[i] = this.findPrice(conn);
+
+      this.sumsecondprice = this.calcConnSum(this.secondconnprice);
 
     }
+
+    this.changePrice();
+
+  }
+
+  calcConnSum(prices: number[]): number {
+
+    let sum: number = 0;
+
+    for (let price of prices) {
+
+      sum += price;
+    }
+
+    return sum;
+  }
+
+  changeCoil() {
+
+    this.coilprice = this.findPrice(this.wirecoil) * this.wire.length;
+    if (this.wirecoil._id == '' || this.wire.length <= 0) {
+      this.allgood = true;
+    }
+    this.changePrice();
+  }
+ 
+
+  changePrice() {
+
+    let price = 0;
+    if (this.sumfirstprice != 0 && this.sumsecondprice != 0 && this.coilprice != 0) {
+
+      this.allgood = this.checkAllgood();
+
+      if (!this.allgood) {
+        price = this.sumfirstprice + this.sumsecondprice + this.coilprice;
+        this.fullprice.next(price);
+
+      }
+
+    }
+
+    this.fullprice.next(price);
+
+  }
+
+  private makeItemBuy(wire: Wire, coil: Coil): string {
+
+    let item: string;
+
+    let array1: string[] = new Array<string>();
+    let array2: string[] = new Array<string>();
+    wire.firstconn.forEach(con => {
+
+      array1.push(`${con.name}-${con.type}`);
+
+    });
+    wire.secondconn.forEach(con => {
+
+      array2.push(`${con.name}-${con.type}`);
+
+    });
+
+    item = array1.toString() + ";" + array2.toString() + ";" + `${coil.name}-${coil.type};` + `${wire.length}`;
+
+    console.log(item);
+
+
+    return item;
+
+  }
+
+  addToCart(event: Event) {
+
+    if (this.newBuy.name == "") {
+      alert("You must fill name field");
+      return;
+    }
+
+    this.newBuy.item = this.makeItemBuy(this.wire, this.wirecoil);
+    this.newBuy.cost = this.cost;
+
+    this.clientserv.addBuy(this.newBuy);
+
+    this.clearAll();
+    this.allgood = this.checkAllgood();
+  
 
   }
 

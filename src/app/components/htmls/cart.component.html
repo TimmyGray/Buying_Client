@@ -29,7 +29,10 @@
                     <mat-card-header>
                       <mat-card-title>{{newbuy.name}}</mat-card-title>
                       <mat-card-subtitle>Price: {{newbuy.cost | currency}}</mat-card-subtitle>
-                      <img mat-card-sm-image [src]="newbuy.image.data"  alt="../../../assets/--images/testpic.jpg"/>
+                      <img mat-card-sm-image [src]="newbuy.image.data" *ngIf="newbuy.image.data!=null;else newbuyimage"/>
+                      <ng-template #newbuyimage>
+                        <img mat-card-sm-image src="../../../assets/--images/testpic.jpg"/>
+                      </ng-template>
                     </mat-card-header>
                     <mat-card-content (click)="setBuy(newbuy,checks.subchecks[i])">
                       <p>First connector: <span [textContent]="parsingItem(newbuy.item,0)|slice:0:30"></span>...</p>
@@ -52,7 +55,7 @@
                   </mat-card>
 
                 </div>
-                <div name="sum">${{newbuy.count*newbuy.cost}}</div>
+                <div name="sum">{{newbuy.count*newbuy.cost|currency}}</div>
                 <div name="check" fxLayout="column">
 
                   <mat-checkbox  [(ngModel)] ="checks.subchecks[i].set"

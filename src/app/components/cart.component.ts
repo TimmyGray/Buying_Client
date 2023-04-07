@@ -230,6 +230,11 @@ export class CartComponent implements OnInit {
 
             this.order.client = client;
             this.order.buys = Array.from(this.buysfororder);
+            this.order.buys.forEach(b => {
+
+              b.image.data = "";
+
+            })
             return this.order;
 
           }),
@@ -244,6 +249,7 @@ export class CartComponent implements OnInit {
             alert("Заказ создан, подробности придут на указанный email");
 
             this.clientservice.initBuys();
+            this.buysfororder = new Set();
             this.clientservice.getListOfBuys();
             this.allCost(false);
 

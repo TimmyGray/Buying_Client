@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { Coil } from "../models/coil"
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
@@ -9,9 +10,9 @@ export class CoilService {
 
   constructor(private httpclient: HttpClient) { }
 
-  getCoils(): Observable<string[]> {
+  getCoils(): Observable<Coil[]> {
 
-    return this.httpclient.get<string[]>(this.url);
+    return this.httpclient.get<Coil[]>(this.url);
 
   }
 

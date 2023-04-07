@@ -10,11 +10,10 @@ export class ConnetorService {
 
   constructor(private client: HttpClient) { }
 
-  getConnectors(): Observable<string[]> {
+  getConnectors(): Observable<Connector[]> {
 
     const headers: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
-
-    return this.client.get<string[]>(this.url, { headers, observe: "body", responseType: "json" });
+    return this.client.get<Connector[]>(this.url, { headers, observe: "body", responseType: "json" });
 
   }
 

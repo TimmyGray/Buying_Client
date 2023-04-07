@@ -13,7 +13,6 @@ export class PriceService {
   getPrices(): Observable<Price[]>{
 
     const headers: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
-
     return this.client.get<Price[]>(this.url, { headers, observe: "body", responseType: "json" });
 
   }

@@ -1,4 +1,4 @@
-import { Connector, CoreNumber } from "./enums";
+import { Connector } from './connector'
 
 export class Wire {
 
@@ -7,7 +7,8 @@ export class Wire {
     public name: string,
     public length: number,
     public type: string,
-    public firstcon: string,
-    public secondcon: string) { }
+    public firstconn: Connector[],
+    public secondconn: Connector[],
+    public numberofconnectors:number) { }
 
 }
