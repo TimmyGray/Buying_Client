@@ -1,27 +1,27 @@
 # StaffBuyingClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
+First, a few words about full project. It provides construction of various cables and their purchase. It consists of two large parts:  
 
-## Development server
+1) Part for seller - https://github.com/TimmyGray/Lovely_Wires; https://github.com/TimmyGray/Lovely_wires_server;  
+2) Part for customer - https://github.com/TimmyGray/Buying_Client; https://github.com/TimmyGray/Dotnet_Server; https://github.com/TimmyGray/BuyingLibrary;  
+Each part contains front and backend with joint mongo database. Most of features implemented, but not all. If something does't work correctly or doesn't work at all -  
+please, write me!In additional,i is writing(Not yet finished) this pet-project for show to potential employer my hard skills. So, it is not real app you should use in your business,ofc=)  
+ 
+This is frontend for server app that you can find by this link https://github.com/TimmyGray/Dotnet_Server  
+In general, this app allow to looking for the buys, creating the custom cables, adding selected buys to cart and making orders(with clients), thats in continue storing in database  
+If you click on current buy you will see detailed information. Every time, when you is adding or is removing buys from/to cart - the total price is changing  
+In the cart page you can see list of added buys. By click on the buy it add/remove from current order with calculating total price. When the order created - the customer recieved a mail with the order deatails  
+The buys sorting doesn't implement yet  
+Also, not of all validation implement  
+You can't see list of buys on the main page until you(seller) created, at least, one buy with the app for seller(Lovely wire, Lovely wire server)  
+Your's possibility to creating custom cable also ref on created cables component with the app for seller  
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+How to run:  
+1) Clone this repo  
+2) Install node.js from official site  
+3) Run "npm i" in app dir  
+4) If you want to use both front and back - clone Dotnet_server repo in the other directory, run server by info from readme  
+5) Run 'npm start' if you want to run app using test angular server or run 'ng build' if you want use your own server. (You can download release from repo and run 'node server.js porttolisten')
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Stack:Angular(angular material), typescript, rxjs, some additional css styles 

@@ -46,3 +46,5 @@ package-lock.json
 /src/assets/*
 obj
 !/src/assets/--images/testpic.jpg
+
+/dist
