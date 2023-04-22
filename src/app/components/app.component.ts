@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, Renderer2, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute, Route, ParamMap, Params } from '@angular/router';
 import { CheckPageDirective } from '../directives/check-page.directive';
 import { BuyService } from '../services/buy.service';
 import { Buy } from '../models/Buy';
 import { ClientService } from '../services/client.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +16,10 @@ import { ClientService } from '../services/client.service';
 export class AppComponent implements OnInit {
   
   dtb: any;
-
+  url:any;
   count: number = 0;
   cost: number = 0;
-
+  body: HTMLElement;
   private getCount(count: number) {
 
     this.count = count;
@@ -34,12 +37,22 @@ export class AppComponent implements OnInit {
     window.addEventListener('scroll', this.scrolling, true);
     this.clientsevice.count$.subscribe((c: number) => this.getCount(c));
     this.clientsevice.price$.subscribe((p: number) => this.getCost(p));
+  
   }
-  constructor(private readonly clientsevice: ClientService) {
-
+  constructor(
+    private readonly clientsevice: ClientService,
+    private readonly route: ActivatedRoute) {
+    console.log(this.route.component);
     this.dtb = document.getElementById("dtb");
-    
+    this.body = document.body;
   }  
+
+  clickOnLink() {
+
+    //alert("Change");
+    //console.log(this.url);
+
+  }
 
   scrolling(e: any) {
 

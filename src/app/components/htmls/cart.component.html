@@ -10,14 +10,13 @@
 
     <div fxLayout="row" fxLayoutAlign="space-evenly start" name="buys and client">
 
-      <div name="buys"  fxLayout="column">
+      <div name="buys" fxLayout="column">
         <div fxLayout="column" fxFlexAlign="end">
-          <mat-checkbox
-                        color="warn"
+          <mat-checkbox color="warn"
                         [checked]="allset"
                         [indeterminate]="someSet()"
                         (change)="setAll($event.checked)">
-          {{checks.name}}
+            {{checks.name}}
           </mat-checkbox>
         </div>
         <div fxLayout="column">
@@ -29,9 +28,9 @@
                     <mat-card-header>
                       <mat-card-title>{{newbuy.name}}</mat-card-title>
                       <mat-card-subtitle>Price: {{newbuy.cost | currency}}</mat-card-subtitle>
-                      <img mat-card-sm-image [src]="newbuy.image.data" *ngIf="newbuy.image.data!=null;else newbuyimage"/>
+                      <img mat-card-sm-image [src]="newbuy.image.data" *ngIf="newbuy.image.data!=null;else newbuyimage" />
                       <ng-template #newbuyimage>
-                        <img mat-card-sm-image src="../../../assets/--images/testpic.jpg"/>
+                        <img mat-card-sm-image src="../../../assets/--images/testpic.jpg" />
                       </ng-template>
                     </mat-card-header>
                     <mat-card-content (click)="setBuy(newbuy,checks.subchecks[i])">
@@ -58,26 +57,19 @@
                 <div name="sum">{{newbuy.count*newbuy.cost|currency}}</div>
                 <div name="check" fxLayout="column">
 
-                  <mat-checkbox  [(ngModel)] ="checks.subchecks[i].set"
+                  <mat-checkbox [(ngModel)]="checks.subchecks[i].set"
                                 (ngModelChange)="updateAll(newbuy,checks.subchecks[i].set)">
 
                   </mat-checkbox>
 
                 </div>
-
               </div>
-
             </li>
-
           </ul>
-
         </div>
-
-
-
       </div>
 
-      <div name="client" fxLayout="column" class="light-grey-bg p-side-2" fxLayoutAlign="center start">
+      <div name="client" fxLayout="column" class="light-grey-bg p-side-2 sticky-top-50" fxLayoutAlign="center start">
         <form>
           <div fxLayout="column">
             <div>
@@ -100,28 +92,22 @@
               </mat-form-field>
 
             </div>
-            <!--<div>
-              <button mat-flat-button color="primary">Check Client</button>
-            </div>-->
+
+            <div name="cost show" fxLayout="column" fxFlexAlign="center">
+              <div class="mat-title">Preliminery cost:{{cost | currency}}</div>
+            </div>
+
+            <div name="button" fxLayout="column" fxFlexAlign="center">
+              <button mat-raised-button color="primary" (click)="makeOrder()">Make order</button>
+            </div>
+
+
           </div>
         </form>
       </div>
-
     </div>
-
-    <div name="cost show" fxLayout="column" fxFlexAlign="center">
-      <div class="mat-title">Preliminery cost:{{cost | currency}}</div>
-    </div>
-
-    <div name="button" fxLayout="column" fxFlexAlign="center">
-      <button mat-raised-button color="primary" (click)="makeOrder()">Make order</button>
-    </div>
-
   </div>
-
 </div>
-
-
 
 
 

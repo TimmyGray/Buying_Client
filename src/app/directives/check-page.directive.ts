@@ -8,6 +8,8 @@ import { Directive,ElementRef,Renderer2, OnInit,ViewChild, HostListener } from '
 })
 export class CheckPageDirective implements OnInit {
 
+  public fixed: boolean;
+  
   private changeClass() {
 
     let dtb: Element|null = document.getElementById("dtb");
@@ -30,6 +32,24 @@ export class CheckPageDirective implements OnInit {
   }
 
   constructor(private elref: ElementRef, private renderer: Renderer2) {
+    console.log(document.body.clientHeight);
+    console.log(document.body.scrollHeight);
+    if (document.body.clientHeight == document.body.scrollHeight) {
+
+      this.fixed = true;
+      this.elref.nativeElement.classList.add("fixed-bot");
+      this.elref.nativeElement.classList.remove("sticky-bot");
+
+
+    }
+    else {
+
+      this.elref.nativeElement.classList.remove("fixed-bot");
+      this.elref.nativeElement.classList.add("sticky-bot");
+
+      this.fixed = false;
+
+    }
 
   }
 

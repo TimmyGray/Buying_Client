@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators'
 import { Buy } from '../models/Buy';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class BuyService {
 
-  private url: string = "https://localhost:7036/buys";
+  private url: string = environment.apiUrl+"/buys";
   constructor(private client: HttpClient) { }
 
   getBuys(): Observable<Buy[]> {

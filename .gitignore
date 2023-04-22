@@ -48,3 +48,4 @@ obj
 !/src/assets/--images/testpic.jpg
 
 /dist
+/src/environments/environment.prod.ts

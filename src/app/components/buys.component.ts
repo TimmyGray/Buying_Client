@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Buy } from '../models/Buy';
 import { FullDescriptionComponent } from '../components/fulldescription.component';
-import { config, from, map, Subscription, switchMap, of, take, Observable, delay, exhaustMap, switchAll, exhaust, concatMap } from 'rxjs';
+import { config, from, map, Subscription, switchMap, of, take, Observable, delay, exhaustMap, switchAll, concatMap } from 'rxjs';
 import { BuyService } from '../services/buy.service';
 import { ClientService } from '../services/client.service';
 import { ParsingService } from '../services/parsing.service';

@@ -361,6 +361,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.allgood = true;
     }
     this.changePrice();
+
   }
  
 

@@ -2,11 +2,12 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { observable, Observable } from "rxjs";
 import { Client } from "../models/client";
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AccountService {
 
-  private readonly url: string = "https://localhost:7036/clients";
+  private readonly url: string = environment.apiUrl+"/clients";
   constructor(private readonly httpclient: HttpClient) { }
 
   getClient(id: string): Observable<Client> {
