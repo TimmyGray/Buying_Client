@@ -1,4 +1,4 @@
-<div>
+<div fxLayout="column">
 
   <mat-toolbar color="accent" class="text-center center-style mg-b-2">
 
@@ -6,54 +6,53 @@
 
   </mat-toolbar>
 
-  <div fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="space-evenly start" name="buys and client" class="revers-cart">
 
-    <div fxLayout="row" fxLayoutAlign="space-evenly start" name="buys and client">
+    <div name="buys"  fxLayout="column" class="mg-r-1">
+      <div fxLayout="column" fxFlexAlign.lt-lg="end" fxFlexAlign.xs="start" class="mg-l-1-xs">
+        <mat-checkbox color="warn"
+                      [checked]="allset"
+                      [indeterminate]="someSet()"
+                      (change)="setAll($event.checked)">
+          {{checks.name}}
+        </mat-checkbox>
+      </div>
+      <div fxLayout="column">
+        <ul style="list-style-type:none;padding-inline-start:10px">
+          <li *ngFor="let newbuy of buysfororder;let i=index"  class="mg-b-2">
+            <div fxLayout="row" fxLayout.xs="row-reverse" fxLayoutGap="5px"  >
+              <div name="buy" fxLayout="column">
+                <mat-card fxFlex.xs="calc(40%-16px)">
+                  <mat-card-header>
+                    <mat-card-title>{{newbuy.name}}</mat-card-title>
+                    <mat-card-subtitle>Price: {{newbuy.cost | currency}}</mat-card-subtitle>
+                  </mat-card-header>
+                  <img mat-card-sm-image [src]="newbuy.image.data" *ngIf="newbuy.image.data!=null;else newbuyimage" />
+                  <ng-template #newbuyimage>
+                    <img mat-card-sm-image src="../../../assets/--images/testpic.jpg" />
+                  </ng-template>
+                  <mat-card-content (click)="setBuy(newbuy,checks.subchecks[i])">
+                    <p>First connector: <span [textContent]="parsingItem(newbuy.item,0)|slice:0:30"></span>...</p>
+                    <p>Second connector: <span [textContent]="parsingItem(newbuy.item,1)|slice:0:30"></span>...</p>
+                    <p>Wire's type: <span [textContent]="parsingItem(newbuy.item,2)"></span></p>
+                    <p>Lenght:<span [textContent]="parsingItem(newbuy.item,3)"></span></p>
+                    <p>count: {{newbuy.count}}</p>
+                  </mat-card-content>
+                  <mat-card-actions class="between-style">
+                    <div class="inline-style">
+                      <button mat-icon-button (click)="addOne(newbuy)">
+                        <mat-icon color="accent">add</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="removeOne(newbuy)">
+                        <mat-icon color="warn">remove</mat-icon>
+                      </button>
+                    </div>
+                    <button mat-stroked-button color="primary" (click)="removeFromCart(newbuy)">remove from cart</button>
+                  </mat-card-actions>
+                </mat-card>
 
-      <div name="buys" fxLayout="column">
-        <div fxLayout="column" fxFlexAlign="end">
-          <mat-checkbox color="warn"
-                        [checked]="allset"
-                        [indeterminate]="someSet()"
-                        (change)="setAll($event.checked)">
-            {{checks.name}}
-          </mat-checkbox>
-        </div>
-        <div fxLayout="column">
-          <ul>
-            <li *ngFor="let newbuy of buysfororder;let i=index" class="mg-b-2">
-              <div fxLayout="row" fxLayoutGap="10px">
-                <div name="buy" fxLayout="column">
-                  <mat-card class="width-300 height-350">
-                    <mat-card-header>
-                      <mat-card-title>{{newbuy.name}}</mat-card-title>
-                      <mat-card-subtitle>Price: {{newbuy.cost | currency}}</mat-card-subtitle>
-                      <img mat-card-sm-image [src]="newbuy.image.data" *ngIf="newbuy.image.data!=null;else newbuyimage" />
-                      <ng-template #newbuyimage>
-                        <img mat-card-sm-image src="../../../assets/--images/testpic.jpg" />
-                      </ng-template>
-                    </mat-card-header>
-                    <mat-card-content (click)="setBuy(newbuy,checks.subchecks[i])">
-                      <p>First connector: <span [textContent]="parsingItem(newbuy.item,0)|slice:0:30"></span>...</p>
-                      <p>Second connector: <span [textContent]="parsingItem(newbuy.item,1)|slice:0:30"></span>...</p>
-                      <p>Wire's type: <span [textContent]="parsingItem(newbuy.item,2)"></span></p>
-                      <p>Lenght:<span [textContent]="parsingItem(newbuy.item,3)"></span></p>
-                      <p>count: {{newbuy.count}}</p>
-                    </mat-card-content>
-                    <mat-card-actions class="between-style">
-                      <div class="inline-style">
-                        <button mat-icon-button (click)="addOne(newbuy)">
-                          <mat-icon color="accent">add</mat-icon>
-                        </button>
-                        <button mat-icon-button (click)="removeOne(newbuy)">
-                          <mat-icon color="warn">remove</mat-icon>
-                        </button>
-                      </div>
-                      <button mat-stroked-button color="primary" (click)="removeFromCart(newbuy)">remove from cart</button>
-                    </mat-card-actions>
-                  </mat-card>
-
-                </div>
+              </div>
+              <div fxLayout.xs="column" fxLayout="row">
                 <div name="sum">{{newbuy.count*newbuy.cost|currency}}</div>
                 <div name="check" fxLayout="column">
 
@@ -63,50 +62,56 @@
                   </mat-checkbox>
 
                 </div>
+
               </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div name="client" fxLayout="column" class="light-grey-bg p-side-2 sticky-top-50" fxLayoutAlign="center start">
-        <form>
-          <div fxLayout="column">
-            <div>
-              <mat-form-field>
-                <mat-label>Enter your name</mat-label>
-                <input matInput type="text" [(ngModel)]="client.name" name="clientName" />
-                <button mat-icon-button matSuffix *ngIf="client.name" (click)="client.name=''">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-form-field>
-
             </div>
-            <div>
-              <mat-form-field>
-                <mat-label>Enter your email</mat-label>
-                <input matInput type="email" [(ngModel)]="client.email" name="clientEmail" />
-                <button mat-icon-button matSuffix *ngIf="client.email" (click)="client.email=''">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-form-field>
-
-            </div>
-
-            <div name="cost show" fxLayout="column" fxFlexAlign="center">
-              <div class="mat-title">Preliminery cost:{{cost | currency}}</div>
-            </div>
-
-            <div name="button" fxLayout="column" fxFlexAlign="center">
-              <button mat-raised-button color="primary" (click)="makeOrder()">Make order</button>
-            </div>
-
-
-          </div>
-        </form>
+          </li>
+        </ul>
       </div>
     </div>
+
+    <div name="client"  fxFlex.xs="40%" class="light-grey-bg p-side-2 sticky-top-50" >
+      <form>
+        <div fxFlex>
+          <div fxLayoutAlign.lt-xs="space-around">
+            <mat-form-field fxFlex.xs="60%">
+              <mat-label>Enter your name</mat-label>
+              <input matInput type="text" [(ngModel)]="client.name" name="clientName" />
+              <button mat-icon-button matSuffix *ngIf="client.name" (click)="client.name=''">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+
+          </div>
+          <div fxLayoutAlign.lt-xs ="space-around">
+            <mat-form-field fxFlex.xs="60%">
+              <mat-label>Enter your email</mat-label>
+              <input matInput type="email" [(ngModel)]="client.email" name="clientEmail" />
+              <button mat-icon-button matSuffix *ngIf="client.email" (click)="client.email=''">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+
+          </div>
+
+          <div name="cost show">
+            <div class="mat-title">Preliminery cost:{{cost | currency}}</div>
+          </div>
+
+          <div name="button" class="p-b-1">
+            <button mat-raised-button color="primary" (click)="makeOrder()">Make order</button>
+          </div>
+
+
+        </div>
+      </form>
+    </div>
   </div>
+
+  <!--<div fxLayout="column">
+
+
+  </div>-->
 </div>
 
 

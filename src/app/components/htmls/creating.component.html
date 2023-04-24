@@ -2,7 +2,7 @@
   <div class="mat-title">In this section you can create your own wire</div>
   <div fxLayout="column" name="formgroup" class="text-center">
 
-    <div fxLayout="row" fxLayoutAlign="space-between">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
 
       <div fxLayout="column">
 
@@ -36,7 +36,7 @@
 
       <div fxLayout="column">
 
-        <mat-form-field>
+        <mat-form-field class="min-width-150">
           <mat-label>Count of connectors</mat-label>
           <input matInput type="number"
                  [(ngModel)]="wire.numberofconnectors"
@@ -49,9 +49,9 @@
 
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="space-between" class="mg-3">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" class="mg-3">
 
-      <div fxLayout="column">
+      <div fxLayout="row">
 
         <mat-form-field class="min-width-250">
           <mat-label>Wire's type</mat-label>
@@ -60,39 +60,48 @@
           </mat-select>
         </mat-form-field>
 
-      </div>
-      <div fxLayout="column"><p [textContent]="findPrice(wirecoil)|currency"></p></div>
-      <div fxLayout="column">
-
-        <mat-form-field *ngFor="let conn of wire.firstconn; let i = index " class="min-width-250">
-          <mat-label>First side connector type</mat-label>
-          <mat-select [(ngModel)]="firstsideconn[i]" (ngModelChange)="changeConnector(i,true)">
-            <mat-option *ngFor="let connector of connectors; let i=index" [value]="connector">{{connector.name}}-{{connector.type}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div><p [textContent]="findPrice(wirecoil)|currency"></p></div>
 
       </div>
-
-      <div fxLayout="column"><p *ngFor="let price of firstconnprice">{{price|currency}}</p></div>
 
       <div fxLayout="column">
 
-        <mat-form-field *ngFor="let conn of wire.secondconn; let i = index" class="min-width-250">
-          <mat-label>Second side connectors type</mat-label>
-          <mat-select [(ngModel)]="secondsideconn[i]" (ngModelChange)="changeConnector(i,false)">
-            <mat-option *ngFor="let connector of connectors; let i=index" [value]="connector">{{connector.name}}-{{connector.type}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div fxLayout="row" *ngFor="let conn of wire.firstconn; let i = index ">
+          <mat-form-field class="min-width-250">
+            <mat-label>First side connector type</mat-label>
+            <mat-select [(ngModel)]="firstsideconn[i]" (ngModelChange)="changeConnector(i,true)">
+              <mat-option *ngFor="let connector of connectors; let i=index" [value]="connector">{{connector.name}}-{{connector.type}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div><p>{{firstconnprice[i]|currency}}</p></div>
+
+        </div>
 
       </div>
 
-      <div fxLayout="column"><p *ngFor="let price of secondconnprice">{{price|currency}}</p></div>
+
+      <div fxLayout="column">
+
+        <div fxLayout="row" *ngFor="let conn of wire.secondconn; let i = index">
+          <mat-form-field class="min-width-250">
+            <mat-label>Second side connectors type</mat-label>
+            <mat-select [(ngModel)]="secondsideconn[i]" (ngModelChange)="changeConnector(i,false)">
+              <mat-option *ngFor="let connector of connectors; let i=index" [value]="connector">{{connector.name}}-{{connector.type}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div><p>{{secondconnprice[i]|currency}}</p></div>
+
+        </div>
+
+      </div>
+
 
 
     </div>
 
 
-    <div fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.xs="start">
 
       <mat-form-field class="min-width-200">
         <mat-label>Description(optional)</mat-label>
