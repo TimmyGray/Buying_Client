@@ -11,6 +11,7 @@ import { CartComponent } from '../components/cart.component';
 import { CreatingComponent } from '../components/creating.component';
 import { NotFoundComponent } from '../components/notfounf.component';
 import { FullDescriptionComponent } from '../components/fulldescription.component';
+import { AuthorizeComponent } from '../components/auth.component';
 import { FormsModule } from '@angular/forms';
 import { ScrollDirective } from '../directives/scroll.directive';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -27,7 +28,8 @@ import { AddRemDirective } from '../directives/addrem.directive';
     FullDescriptionComponent,
     ScrollDirective,
     CheckPageDirective,
-    AddRemDirective
+    AddRemDirective,
+    AuthorizeComponent
 
   ],
   imports: [

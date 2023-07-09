@@ -16,6 +16,8 @@ Also, not of all validation implement
 You can't see list of buys on the main page until you(seller) created, at least, one buy with the app for seller(Lovely wire, Lovely wire server)  
 Your's possibility to creating custom cable also depends on created cable components with the app for seller  
 
+ATTENTION!!For now, I is implementing authenticaton in corresponding branch, so, if wou want working code(without authentication) - take master branch!  
+
 How to run:  
 1) Clone this repo  
 2) Install node.js from official site  
