@@ -2,20 +2,21 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 :root {
-
-    --main-1:1rem;
-    --main-2:2rem;
-    --main-3:3rem;
-    --main-50:50px;
-    --main-75:75px;
-    --main-100:100px;
-    --main-150:150px;
-    --main-200:200px;
-    --main-250:250px;
-    --main-300:300px;
-    --main-350:350px;
-    --main-400:400px;
-
+  --main-1: 1rem;
+  --main-2: 2rem;
+  --main-3: 3rem;
+  --main-round:5px;
+  --main-50: 50px;
+  --main-75: 75px;
+  --main-100: 100px;
+  --main-150: 150px;
+  --main-200: 200px;
+  --main-250: 250px;
+  --main-300: 300px;
+  --main-350: 350px;
+  --main-400: 400px;
+  --main-100-procent: 100%;
+  --main-blue: #4872d4;
 }
 
 html, body { height: 100%; }
@@ -229,6 +230,12 @@ body {
     justify-content:center;
 }
 
+.mg-b-1{
+
+    margin-bottom:1rem;
+
+}
+
 .mg-b-2{
 
     margin-bottom:2rem;
@@ -257,6 +264,12 @@ body {
 .p-b-1{
 
     padding-bottom:1rem;
+}
+
+.width-100-procent{
+
+    width:var(--main-100-procent);
+
 }
 
 .width-200{
@@ -334,4 +347,17 @@ body {
 .flexBox {
   display: flex;
   flex-grow:4;
+}
+
+.link{
+
+   text-decoration:none;
+   color:var(--main-blue);
+
+}
+
+.round-corner{
+
+    border-radius:var(--main-round);
+
 }

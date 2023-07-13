@@ -17,10 +17,17 @@ export class AccountService {
 
   }
 
-  postClient(newClieent: Client): Observable<Client> {
+  login(client: Client): Observable<Client> {
 
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json"});
-    return this.httpclient.post<Client>(this.url, JSON.stringify(newClieent), { headers: httpheaders });
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
+    return this.httpclient.post<Client>(this.url + '/login', JSON.stringify(client), { headers: httpheaders });
+
+  }
+
+  register(regForm: FormData): Observable<object> {
+
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
+    return this.httpclient.post<object>(this.url + '/register', regForm, { headers: httpheaders });
 
   }
 

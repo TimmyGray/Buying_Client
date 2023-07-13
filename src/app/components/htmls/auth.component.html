@@ -1,47 +1,78 @@
-<div fxLayout="column" class="mg-t-2">
+<div fxLayout="column" class="mg-t-2 text-center center-style">
+  <div class="mat-title">Registration</div>
 
-  <div fxLayout="row" fxLayoutAlign="center">
-    <mat-form-field appierence="fill">
-      <mat-label>Login</mat-label>
-      <input matInput placeholder="Enter login/name" />
-      <mat-icon matSuffix>mood</mat-icon>
-    </mat-form-field>
+  <form [formGroup]="registrationForm" #formDir="ngForm">
 
-  </div>
-
-  <div fxLayout="row" fxLayoutAlign="center">
-    <mat-form-field appierence="fill">
-      <mat-label>Email</mat-label>
-      <input type="email" matInput placeholder="Enter email" />
-      <mat-icon matSuffix>local_post_office</mat-icon>
-    </mat-form-field>
-  </div>
-
-  <div fxLayout="row" fxLayoutAlign="center">
-    <mat-form-field appierence="fill">
-      <mat-label>Password</mat-label>
-      <input type="password" matInput placeholder="Enter password" />
-      <mat-icon matSuffix>fingerprint</mat-icon>
-      <mat-hint>The password must include at least one digit and special character</mat-hint>
-    </mat-form-field>
-  </div>
-
-  <div fxLayout="row" fxLayoutAlign="center" class="mg-t-2">
-    <mat-form-field appierence="fill">
-      <mat-label>Confirm password</mat-label>
-      <input type="password" matInput placeholder="Confirm password" />
-      <mat-icon matSuffix>verified_user</mat-icon>
-    </mat-form-field>
-  </div>
-
-  <div fxLayout="row" fxLayoutAlign="center center" class="mg-t-2">
-    <div class="mg-r-1">
-      <button mat-raised-button color="primary" >Register</button>
+    <div fxLayout="row" fxLayoutAlign="center">
+      <mat-form-field appierence="fill">
+        <mat-label>Login</mat-label>
+        <input type="text"
+               matInput
+               placeholder="Enter login/name"
+               formControlName="login"
+               required />
+        <mat-error *ngIf="login?.hasError('required') && (login?.dirty || login?.touched)">Login is required</mat-error>
+        <mat-error *ngIf="login?.hasError('maxlength') && (login?.dirty || login?.touched)">To long login - maximum 20 letters</mat-error>
+        <mat-icon matSuffix>mood</mat-icon>
+      </mat-form-field>
     </div>
+
+    <div fxLayout="row" fxLayoutAlign="center">
+      <mat-form-field appierence="fill">
+        <mat-label>Email</mat-label>
+        <input type="email"
+               matInput
+               placeholder="Enter email"
+               formControlName="email"
+               required />
+        <mat-icon matSuffix>local_post_office</mat-icon>
+        <mat-error *ngIf="email?.hasError('required') && (email?.dirty || email?.touched)">Email is required</mat-error>
+        <mat-error *ngIf="email?.hasError('email') && (email?.dirty || email?.touched)">Valid email is required</mat-error>
+      </mat-form-field>
+    </div>
+
     <div>
-      <button mat-raised-button color="accent">Reset</button>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <mat-form-field appierence="fill">
+          <mat-label>Password</mat-label>
+          <input matInput
+                 type="password"
+                 placeholder="Enter password"
+                 formControlName="password"
+                 required />
+          <mat-icon matSuffix>fingerprint</mat-icon>
+          <mat-error *ngIf="password?.hasError('required') && (password?.dirty || password?.touched)">Password is required</mat-error>
+          <mat-error *ngIf="password?.hasError('minlength') && (password?.dirty || password?.touched)">Password must consists minimum of 10 letters</mat-error>
+          <mat-hint>The password must include at least one digit and special character</mat-hint>
+        </mat-form-field>
+      </div>
 
+      <div fxLayout="row" fxLayoutAlign="center" class="mg-t-2">
+        <mat-form-field appierence="fill">
+          <mat-label>Confirm password</mat-label>
+          <input matInput
+                 type="password"
+                 placeholder="Confirm password"
+                 formControlName="confirmPassword"
+                 required />
+          <mat-icon matSuffix>verified_user</mat-icon>
+          <mat-error *ngIf="confirmPassword?.hasError('required') && (confirmPassword?.dirty || confirmPassword?.touched)">Confirm password is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-error *ngIf="registrationForm?.hasError('equalPass') && (password?.dirty || password?.touched)">Password and confirm password must be equal</mat-error>
     </div>
-  </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" class="mg-t-2">
+      <div class="mg-r-1">
+        <button [disabled]="registrationForm.invalid" mat-raised-button color="primary" (click)="registerClient()">Register</button>
+      </div>
+      <div>
+        <button mat-raised-button color="accent" (click)="formDir.resetForm({})">Reset</button>
+      </div>
+    </div>
+
+  </form>
+  
 
 </div>

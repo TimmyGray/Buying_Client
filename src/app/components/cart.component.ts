@@ -33,7 +33,7 @@ export class CartComponent implements OnInit {
     private readonly orderservice: OrderService,
     private readonly accservice: AccountService,
     private readonly parsingservice: ParsingService) {
-    this.client = new Client("", "", "");
+    this.client = new Client("", "", "","");
     this.buysfororder = new Set<Buy>();
     //this.subscription = new Subscription();
     this.checks = { name: "Set All", set: true, subchecks: new Array<ICartBuy>() };
@@ -220,65 +220,65 @@ export class CartComponent implements OnInit {
 
   makeOrder() {
 
-    if (this.client.name != "" && this.client.email!="") {
+    //if (this.client.name != "" && this.client.email!="") {
 
-      if (this.buysfororder.size != 0) {
+    //  if (this.buysfororder.size != 0) {
 
-        this.accservice.postClient(this.client).pipe(
+    //    this.accservice.postClient(this.client).pipe(
 
-          map(client => {
+    //      map(client => {
 
-            this.order.client = client;
-            this.order.buys = Array.from(this.buysfororder);
-            this.order.buys.forEach(b => {
+    //        this.order.client = client;
+    //        this.order.buys = Array.from(this.buysfororder);
+    //        this.order.buys.forEach(b => {
 
-              b.image.data = "";
+    //          b.image.data = "";
 
-            })
-            return this.order;
+    //        })
+    //        return this.order;
 
-          }),
+    //      }),
 
-          exhaustMap(order => this.orderservice.postOrder(order))
+    //      exhaustMap(order => this.orderservice.postOrder(order))
 
-        ).subscribe({
-          next: (order => {
+    //    ).subscribe({
+    //      next: (order => {
 
-            console.log(order);
-            console.log("Заказ создан, подробности придут на указанный email");
-            alert("Заказ создан, подробности придут на указанный email");
+    //        console.log(order);
+    //        console.log("Заказ создан, подробности придут на указанный email");
+    //        alert("Заказ создан, подробности придут на указанный email");
 
-            this.clientservice.initBuys();
-            this.buysfororder = new Set();
-            this.clientservice.getListOfBuys();
-            this.allCost(false);
+    //        this.clientservice.initBuys();
+    //        this.buysfororder = new Set();
+    //        this.clientservice.getListOfBuys();
+    //        this.allCost(false);
 
 
-          }),
-          error: (error => {
+    //      }),
+    //      error: (error => {
 
-            console.error(error);
-            alert("Что-то пошло не так=(((Заказ создан не был");
+    //        console.error(error);
+    //        alert("Что-то пошло не так=(((Заказ создан не был");
 
-          })
+    //      })
 
-        });
+    //    });
 
-      }
-      else {
+    //  }
+    //  else {
 
-        console.log("У вас нет покупок");
-        alert("У вас нет покупок");
+    //    console.log("У вас нет покупок");
+    //    alert("У вас нет покупок");
 
-      }
+    //  }
 
-    }
-    else {
+    //}
+    //else {
 
-        console.log("Заполните поля клиента");
-        alert("Заполните поля клиента");
+    //    console.log("Заполните поля клиента");
+    //    alert("Заполните поля клиента");
 
-    }
+    //}
 
   }
    
