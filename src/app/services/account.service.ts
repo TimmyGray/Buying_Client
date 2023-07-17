@@ -24,10 +24,10 @@ export class AccountService {
 
   }
 
-  register(regForm: FormData): Observable<object> {
+  register(regFormInfo:any): Observable<object> {
 
     const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
-    return this.httpclient.post<object>(this.url + '/register', regForm, { headers: httpheaders });
+    return this.httpclient.post<object>(this.url + '/registration', JSON.stringify(regFormInfo), { headers: httpheaders });
 
   }
 

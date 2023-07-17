@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, Renderer2, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, Renderer2, OnInit, ViewChild, ElementRef,AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Route, ParamMap, Params } from '@angular/router';
 import { CheckPageDirective } from '../directives/check-page.directive';
 import { BuyService } from '../services/buy.service';

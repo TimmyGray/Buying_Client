@@ -12,8 +12,8 @@ import { confirmPasswordValidator } from '../directives/confirm_password_validat
   providers: [AccountService]
 })
 export class AuthorizeComponent implements OnInit, OnDestroy {
-  @ViewChild('regForm', { static: false })
-  regform!: ElementRef
+  //@ViewChild('regForm', { static: false })
+  //regform!: ElementRef
 
   registrationForm!: FormGroup;
   regInfo = {
@@ -23,6 +23,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     confirmPassword:''
   };
 
+  hide: boolean = true;
 
   constructor(private readonly accountserv: AccountService) { }
 
@@ -48,17 +49,55 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   get confirmPassword() { return this.registrationForm.get('confirmPassword'); }
 
   registerClient() {
-    let form = new FormData(this.regform.nativeElement)
-    this.accountserv.register(form).subscribe({
-      next: (jwttoken: object) => {
+
+    of(this.regInfo).pipe(
+      map(regform => {
+        regform.login = this.registrationForm.get('login')?.value;
+        regform.email = this.registrationForm.get('email')?.value;
+        regform.password = this.registrationForm.get('password')?.value;
+        regform.confirmPassword = this.registrationForm.get('confirmPassword')?.value;
+      }),
+      exhaustMap(() => this.accountserv.register(this.regInfo))
+    ).subscribe({
+      next: (jwttoken: any) => {
+
+        this.setJwt(jwttoken);
+        console.log('Successful registration');
+        alert('Successful registration! Please, login to make an order!')
 
       },
       error: (regerror: Error) => {
+
+        alert(regerror.message);
+        console.log(regerror);
 
       }
     })
 
 
+  }
+
+  private setJwt(jwt_token:any) {
+
+
+    try {
+
+      sessionStorage.setItem('access_token', jwt_token.access_token);
+      sessionStorage.setItem('login', jwt_token.login);
+      sessionStorage.setItem('email', jwt_token.email);
+
+    }
+    catch {
+
+      console.log('Something wrong with token');
+
+    }
+    finally {
+
+      console.log(jwt_token);
+
+    }
+    
   }
 
 }

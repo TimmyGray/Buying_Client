@@ -1,7 +1,7 @@
 <div fxLayout="column" class="mg-t-2 text-center center-style">
   <div class="mat-title">Registration</div>
 
-  <form [formGroup]="registrationForm" #formDir="ngForm">
+  <form [formGroup]="registrationForm" #formDir="ngForm" #regForm>
 
     <div fxLayout="row" fxLayoutAlign="center">
       <mat-form-field appierence="fill">
@@ -36,11 +36,13 @@
         <mat-form-field appierence="fill">
           <mat-label>Password</mat-label>
           <input matInput
-                 type="password"
+                 [type]="(hide)?'password':'text'"
                  placeholder="Enter password"
                  formControlName="password"
                  required />
-          <mat-icon matSuffix>fingerprint</mat-icon>
+          <button mat-icon-button matSuffix (click)="hide=!hide">
+            <mat-icon>{{(hide)?'visibility':'visibility_off'}}</mat-icon>
+          </button>
           <mat-error *ngIf="password?.hasError('required') && (password?.dirty || password?.touched)">Password is required</mat-error>
           <mat-error *ngIf="password?.hasError('minlength') && (password?.dirty || password?.touched)">Password must consists minimum of 10 letters</mat-error>
           <mat-hint>The password must include at least one digit and special character</mat-hint>
@@ -63,7 +65,8 @@
       <mat-error *ngIf="registrationForm?.hasError('equalPass') && (password?.dirty || password?.touched)">Password and confirm password must be equal</mat-error>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center center" class="mg-t-2">
+    <div class="mat-caption"><a class="link" href="">Already registered?</a></div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="mg-t-1">
       <div class="mg-r-1">
         <button [disabled]="registrationForm.invalid" mat-raised-button color="primary" (click)="registerClient()">Register</button>
       </div>

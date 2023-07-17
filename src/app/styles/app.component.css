@@ -32,4 +32,13 @@
 
 }
 
+.like-btn{
+    cursor:pointer;
+}
+.like-btn:hover{
+    
+    background-color:red!important;
+
+}
+
 
