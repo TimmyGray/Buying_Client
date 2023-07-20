@@ -7,7 +7,7 @@ import { Buy } from '../models/Buy';
   providedIn: 'root'
 
 })
-export class ClientService {
+export class CartService {
 
   private listofbuys: Set<Buy>;
   private curcount: number;
@@ -25,7 +25,6 @@ export class ClientService {
     this.listofbuys = new Set<Buy>();
     this.curcount = 0;
     this.curprice = 0;
-    console.log(`root`);
   }
 
   private changeBuy(buy: Buy, num: number, price: number) {

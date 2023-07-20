@@ -1,7 +1,8 @@
-import { Component,OnInit, OnDestroy,AfterViewInit, ElementRef,ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Client } from '../models/client';
-import { ClientService } from '../services/client.service';
 import { AccountService } from '../services/account.service';
+import { ClientsIndentityService } from '../services/clients_indentity.service';
 import { map, Observable, fromEvent, switchMap, mergeMap, exhaustMap, from, of, filter } from 'rxjs';
 import { Form, Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { confirmPasswordValidator } from '../directives/confirm_password_validator.directive';
@@ -12,10 +13,10 @@ import { confirmPasswordValidator } from '../directives/confirm_password_validat
   providers: [AccountService]
 })
 export class AuthorizeComponent implements OnInit, OnDestroy {
-  //@ViewChild('regForm', { static: false })
-  //regform!: ElementRef
 
   registrationForm!: FormGroup;
+  loginForm!: FormGroup;
+
   regInfo = {
     login: '',
     email: '',
@@ -23,9 +24,22 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     confirmPassword:''
   };
 
+  logInfo = {
+    emailOrLogin: '',
+    password:''
+  }
+
+  isRegistration: boolean;
   hide: boolean = true;
 
-  constructor(private readonly accountserv: AccountService) { }
+  constructor(
+    private readonly accountserv: AccountService,
+    private readonly clientsserv: ClientsIndentityService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute) {
+    this.isRegistration = (this.route.snapshot.params['isreg'] === 'true')?true:false;
+    
+  }
 
   ngOnDestroy(): void { }
 
@@ -38,66 +52,93 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
       confirmPassword: new FormControl(this.regInfo.confirmPassword, [Validators.required])
     }, { validators: confirmPasswordValidator });
 
+    this.loginForm = new FormGroup({
+      emailOrLogin: new FormControl(this.logInfo.emailOrLogin, [Validators.required]),
+      password: new FormControl(this.logInfo.password, [Validators.required])
+    })
+
+    this.route.paramMap.pipe(
+
+      switchMap((params: ParamMap) => params.getAll('isreg')),
+      map((param: string) => (param === 'true') ? true : false)
+
+    ).subscribe({
+      next: (isreg: boolean) => this.isRegistration = isreg
+    });
+
   }
 
-  get login() { return this.registrationForm.get('login'); }
+  get registrationInfo() {
+    return {
+      login: this.registrationForm.get('login'),
+      email: this.registrationForm.get('email'),
+      password: this.registrationForm.get('password'),
+      confirmPassword: this.registrationForm.get('confirmPassword')
+    }
+  }
 
-  get email() { return this.registrationForm.get('email'); }
+  get loginInfo() {
+    return {
+      emailOrLogin: this.loginForm.get('emailOrLogin'),
+      password: this.loginForm.get('password')
+    }
 
-  get password() { return this.registrationForm.get('password'); }
-
-  get confirmPassword() { return this.registrationForm.get('confirmPassword'); }
+  }
 
   registerClient() {
 
     of(this.regInfo).pipe(
       map(regform => {
-        regform.login = this.registrationForm.get('login')?.value;
-        regform.email = this.registrationForm.get('email')?.value;
-        regform.password = this.registrationForm.get('password')?.value;
-        regform.confirmPassword = this.registrationForm.get('confirmPassword')?.value;
+        regform.login = this.registrationInfo.login?.value;
+        regform.email = this.registrationInfo.email?.value;
+        regform.password = this.registrationInfo.password?.value;
+        regform.confirmPassword = this.registrationInfo.confirmPassword?.value;
       }),
       exhaustMap(() => this.accountserv.register(this.regInfo))
     ).subscribe({
       next: (jwttoken: any) => {
 
-        this.setJwt(jwttoken);
+        this.clientsserv.login(jwttoken);
         console.log('Successful registration');
         alert('Successful registration! Please, login to make an order!')
 
       },
-      error: (regerror: Error) => {
+      error: (regerror: any) => {
 
-        alert(regerror.message);
+        alert(regerror.error);
         console.log(regerror);
 
       }
-    })
+    });
 
 
   }
 
-  private setJwt(jwt_token:any) {
+  loginClient() {
 
+    of(this.logInfo).pipe(
+      map(logform => {
+        logform.emailOrLogin = this.loginInfo.emailOrLogin?.value;
+        logform.password = this.loginInfo.password?.value;
+      }),
+      exhaustMap(() => this.accountserv.login(this.logInfo))
+    ).subscribe({
+      next: (jwttoken: any) => {
 
-    try {
+        this.clientsserv.login(jwttoken);
+        console.log('Successful login');
+        this.router.navigate(['']);
 
-      sessionStorage.setItem('access_token', jwt_token.access_token);
-      sessionStorage.setItem('login', jwt_token.login);
-      sessionStorage.setItem('email', jwt_token.email);
+      },
+      error: (logerror: any) => {
 
-    }
-    catch {
+        alert(logerror.error);
+        console.log(logerror);
 
-      console.log('Something wrong with token');
+      }
+    });
 
-    }
-    finally {
-
-      console.log(jwt_token);
-
-    }
-    
   }
+
 
 }

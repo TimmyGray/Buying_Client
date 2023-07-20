@@ -8,7 +8,7 @@ import { PriceService } from '../services/price.service';
 import { Connector } from '../models/connector';
 import { CoilService } from '../services/coil.service';
 import { Iitem } from '../models/item.interface';
-import { ClientService } from '../services/client.service';
+import { CartService } from '../services/cart.service';
 import { Image } from '../models/image';
 import { Coil } from '../models/coil';
 import { exhaustMap, filter, from, fromEvent, map,of, Observable, Subject, Subscription } from 'rxjs';
@@ -54,7 +54,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly connectorserv: ConnetorService,
     private readonly priceserv: PriceService,
     private readonly coilserv: CoilService,
-    private readonly clientserv: ClientService) {
+    private readonly clientserv: CartService) {
 
     this.newBuy = this.initBuy();
     this.wire = this.initWire();

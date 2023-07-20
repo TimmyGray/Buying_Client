@@ -17,10 +17,10 @@ export class AccountService {
 
   }
 
-  login(client: Client): Observable<Client> {
+  login(logFormInfo: any): Observable<Client> {
 
     const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
-    return this.httpclient.post<Client>(this.url + '/login', JSON.stringify(client), { headers: httpheaders });
+    return this.httpclient.post<Client>(this.url + '/login', JSON.stringify(logFormInfo), { headers: httpheaders });
 
   }
 

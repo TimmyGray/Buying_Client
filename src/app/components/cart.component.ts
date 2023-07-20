@@ -5,7 +5,7 @@ import { Order } from '../models/order';
 import { OrderStatus } from '../models/enums';
 import { Observable, Subscription } from 'rxjs';
 import { map, switchMap, exhaustMap } from 'rxjs/operators';
-import { ClientService } from '../services/client.service';
+import { CartService } from '../services/cart.service';
 import { ICartBuy } from '../models/cartbuy.interface';
 import { OrderService } from '../services/order.service';
 import { AccountService } from '../services/account.service';
@@ -29,7 +29,7 @@ export class CartComponent implements OnInit {
   checks: ICartBuy;
 
   constructor(
-    private readonly clientservice: ClientService,
+    private readonly clientservice: CartService,
     private readonly orderservice: OrderService,
     private readonly accservice: AccountService,
     private readonly parsingservice: ParsingService) {

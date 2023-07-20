@@ -1,7 +1,7 @@
 <div fxLayout="column" class="mg-t-2 text-center center-style">
-  <div class="mat-title">Registration</div>
+  <div class="mat-title">{{(isRegistration)?'Registration':'Login'}}</div>
 
-  <form [formGroup]="registrationForm" #formDir="ngForm" #regForm>
+  <form *ngIf="isRegistration" [formGroup]="registrationForm" #formDir="ngForm" #regForm>
 
     <div fxLayout="row" fxLayoutAlign="center">
       <mat-form-field appierence="fill">
@@ -11,8 +11,12 @@
                placeholder="Enter login/name"
                formControlName="login"
                required />
-        <mat-error *ngIf="login?.hasError('required') && (login?.dirty || login?.touched)">Login is required</mat-error>
-        <mat-error *ngIf="login?.hasError('maxlength') && (login?.dirty || login?.touched)">To long login - maximum 20 letters</mat-error>
+        <mat-error *ngIf="registrationInfo.login?.hasError('required')
+                   && (registrationInfo.login?.dirty
+                   || registrationInfo.login?.touched)">Login is required</mat-error>
+        <mat-error *ngIf="registrationInfo.login?.hasError('maxlength')
+                   && (registrationInfo.login?.dirty
+                   || registrationInfo.login?.touched)">To long login - maximum 20 letters</mat-error>
         <mat-icon matSuffix>mood</mat-icon>
       </mat-form-field>
     </div>
@@ -26,8 +30,12 @@
                formControlName="email"
                required />
         <mat-icon matSuffix>local_post_office</mat-icon>
-        <mat-error *ngIf="email?.hasError('required') && (email?.dirty || email?.touched)">Email is required</mat-error>
-        <mat-error *ngIf="email?.hasError('email') && (email?.dirty || email?.touched)">Valid email is required</mat-error>
+        <mat-error *ngIf="registrationInfo.email?.hasError('required')
+                   && (registrationInfo.email?.dirty
+                   || registrationInfo.email?.touched)">Email is required</mat-error>
+        <mat-error *ngIf="registrationInfo.email?.hasError('email')
+                   && (registrationInfo.email?.dirty
+                   || registrationInfo.email?.touched)">Valid email is required</mat-error>
       </mat-form-field>
     </div>
 
@@ -43,8 +51,12 @@
           <button mat-icon-button matSuffix (click)="hide=!hide">
             <mat-icon>{{(hide)?'visibility':'visibility_off'}}</mat-icon>
           </button>
-          <mat-error *ngIf="password?.hasError('required') && (password?.dirty || password?.touched)">Password is required</mat-error>
-          <mat-error *ngIf="password?.hasError('minlength') && (password?.dirty || password?.touched)">Password must consists minimum of 10 letters</mat-error>
+          <mat-error *ngIf="registrationInfo.password?.hasError('required')
+                     && (registrationInfo.password?.dirty
+                     || registrationInfo.password?.touched)">Password is required</mat-error>
+          <mat-error *ngIf="registrationInfo.password?.hasError('minlength')
+                     && (registrationInfo.password?.dirty
+                     || registrationInfo.password?.touched)">Password must consists minimum of 10 letters</mat-error>
           <mat-hint>The password must include at least one digit and special character</mat-hint>
         </mat-form-field>
       </div>
@@ -58,14 +70,18 @@
                  formControlName="confirmPassword"
                  required />
           <mat-icon matSuffix>verified_user</mat-icon>
-          <mat-error *ngIf="confirmPassword?.hasError('required') && (confirmPassword?.dirty || confirmPassword?.touched)">Confirm password is required</mat-error>
+          <mat-error *ngIf="registrationInfo.confirmPassword?.hasError('required')
+                     && (registrationInfo.confirmPassword?.dirty
+                     || registrationInfo.confirmPassword?.touched)">Confirm password is required</mat-error>
         </mat-form-field>
       </div>
 
-      <mat-error *ngIf="registrationForm?.hasError('equalPass') && (password?.dirty || password?.touched)">Password and confirm password must be equal</mat-error>
+      <mat-error *ngIf="registrationForm?.hasError('equalPass')
+                 && (registrationInfo.password?.dirty
+                 || registrationInfo.password?.touched)">Password and confirm password must be equal</mat-error>
     </div>
 
-    <div class="mat-caption"><a class="link" href="">Already registered?</a></div>
+    <div class="mat-caption like-btn" (click)="isRegistration=!isRegistration"><a class="link">Already registered?</a></div>
     <div fxLayout="row" fxLayoutAlign="center center" class="mg-t-1">
       <div class="mg-r-1">
         <button [disabled]="registrationForm.invalid" mat-raised-button color="primary" (click)="registerClient()">Register</button>
@@ -76,6 +92,50 @@
     </div>
 
   </form>
-  
+
+
+  <form *ngIf="!isRegistration" [formGroup]="loginForm" #formLog="ngForm" #logForm>
+
+    <div fxLayout="row" fxLayoutAlign="center">
+      <mat-form-field appierence="fill">
+        <mat-label>Email/Login</mat-label>
+        <input type="text"
+               matInput
+               placeholder="Enter email/login"
+               formControlName="emailOrLogin"
+               required />
+        <mat-icon matSuffix>perm_identity</mat-icon>
+        <mat-error *ngIf="loginInfo.emailOrLogin?.hasError('required') && (loginInfo.emailOrLogin?.dirty || loginInfo.emailOrLogin?.touched)">Email/Login is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center">
+      <mat-form-field appierence="fill">
+        <mat-label>Password</mat-label>
+        <input matInput
+               [type]="(hide)?'password':'text'"
+               placeholder="Enter password"
+               formControlName="password"
+               required />
+        <button mat-icon-button matSuffix (click)="hide=!hide">
+          <mat-icon>{{(hide)?'visibility':'visibility_off'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginInfo.password?.hasError('required')
+                   && (loginInfo.password?.dirty
+                   || loginInfo.password?.touched)">Password is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" class="mg-t-1">
+      <div class="mg-r-1">
+        <button [disabled]="loginForm.invalid" mat-raised-button color="primary" (click)="loginClient()">Login</button>
+      </div>
+      <div>
+        <button mat-raised-button color="warn" (click)="isRegistration=!isRegistration">Registration</button>
+      </div>
+    </div>
+
+  </form>
+
 
 </div>

@@ -4,7 +4,7 @@ import { Buy } from '../models/Buy';
 import { FullDescriptionComponent } from '../components/fulldescription.component';
 import { config, from, map, Subscription, switchMap, of, take, Observable, delay, exhaustMap, switchAll, concatMap } from 'rxjs';
 import { BuyService } from '../services/buy.service';
-import { ClientService } from '../services/client.service';
+import { CartService } from '../services/cart.service';
 import { ParsingService } from '../services/parsing.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class BuysComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private readonly buyservice: BuyService,
-    private readonly clientservice: ClientService,
+    private readonly clientservice: CartService,
     private readonly parsingservice:ParsingService) {
 
     this.listofbuys = new Array<Buy>();

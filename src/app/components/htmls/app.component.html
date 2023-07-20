@@ -25,7 +25,7 @@
               <mat-icon>settings input component</mat-icon>
               <span>Create Wire</span>
             </button>
-            <button routerLink="/authorize" mat-menu-item>
+            <button [routerLink]="['authorize','true']" mat-menu-item>
               <mat-icon>how_to_reg</mat-icon>
               <span>Make Account</span>
             </button>
@@ -35,23 +35,26 @@
 
 
         <div class="navtabs" fxShow="true" fxHide.lt-sm="true">
-          <a mat-button routerLink="" checkpage routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Main</a>
-          <a mat-button routerLink="/creating" checkpage routerLinkActive="active">Create Wire </a>
-          <a mat-button routerLink="/authorize" checkpage routerLinkActive="active">Make Account</a>
+          <a mat-button routerLink="" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{exact:true}">Main</a>
+          <a mat-button routerLink="/creating" routerLinkActive="active" ariaCurrentWhenActive="page">Create Wire </a>
+          <a mat-button [routerLink]="['authorize','true']" routerLinkActive="active" ariaCurrentWhenActive="page">Make Account</a>
         </div>
-
-
 
       </div>
 
-      <div class="width-100-procent"  fxLauout="column">
+      <div class="width-100-procent" fxLauout="column" >
         <div fxLayout="row-reverse">
-          <button [matMenuTriggerFor]="accmenu" mat-mini-fab><mat-icon>person_pic_circle</mat-icon></button>
-          <mat-menu #accmenu="matMenu">
-            <button mat-menu-item>Manage Acc</button>
-            <button mat-menu-item>Logout</button>
-          </mat-menu>
+          <div *ngIf="isAuthorized">
+            <button [matMenuTriggerFor]="accmenu" mat-mini-fab><mat-icon>person_pic_circle</mat-icon></button>
+            <mat-menu #accmenu="matMenu">
+              <button mat-menu-item>Manage Acc</button>
+              <button mat-menu-item (click)="logout()">Logout</button>
+            </mat-menu>
 
+          </div>
+          <div *ngIf="!isAuthorized">
+            <a mat-button [routerLink]="['authorize','false']">Sign In</a>
+          </div>
         </div>
       </div>
 

@@ -7,10 +7,11 @@ import { NotFoundComponent } from '../components/notfounf.component';
 import { AuthorizeComponent } from '../components/auth.component';
 
 const routes: Routes = [
-  { path: "", component: BuysComponent },
   { path: "creating", component: CreatingComponent },
   { path: "cart", component: CartComponent },
-  { path: "authorize", component: AuthorizeComponent }];
+  { path: "authorize/:isreg", component: AuthorizeComponent },
+  { path: "", component: BuysComponent },
+  { path: "**", redirectTo: "/" }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
