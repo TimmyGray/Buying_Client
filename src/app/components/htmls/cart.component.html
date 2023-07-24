@@ -113,13 +113,12 @@
         <button mat-flat-button color="accent" [disabled]="loginForm.invalid" (click)="loginClient()">Login</button>
       </div>
 
-
       <div name="cost show">
         <div class="mat-title">Preliminery cost:{{cost | currency}}</div>
       </div>
 
       <div name="button" fxLayout="column" class="p-b-1 width-100-procent">
-        <button mat-raised-button color="primary" [disabled]="!isAuthorized" (click)="makeOrder()">Make order</button>
+        <button mat-raised-button color="primary" [disabled]="!isAuthorized||buysfororder.size==0" (click)="makeOrder()">Make order</button>
       </div>
 
     </div>

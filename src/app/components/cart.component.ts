@@ -3,8 +3,8 @@ import { Client } from '../models/client';
 import { Buy } from '../models/Buy';
 import { Order } from '../models/order';
 import { OrderStatus } from '../models/enums';
-import { Observable, Subscription,of } from 'rxjs';
-import { map, switchMap, exhaustMap } from 'rxjs/operators';
+import { Observable, Subscription,of, throwError } from 'rxjs';
+import { map, switchMap, exhaustMap, filter } from 'rxjs/operators';
 import { CartService } from '../services/cart.service';
 import { ICartBuy } from '../models/cartbuy.interface';
 import { OrderService } from '../services/order.service';
@@ -22,10 +22,10 @@ import { FormControl, Form, FormGroup, Validators } from '@angular/forms';
 export class CartComponent implements OnInit {
 
   loginForm!: FormGroup;
-  client: Client;
+  //client: Client;
   cost: number = 0;
   buysfororder: Set<Buy>;
-  order: Order;
+  //order: Order;
 
   allset: boolean;
   checks: ICartBuy;
@@ -43,13 +43,14 @@ export class CartComponent implements OnInit {
     private readonly accountservice: AccountService,
     private readonly parsingservice: ParsingService,
     private readonly clientservice: ClientsIndentityService) {
-    this.client = new Client("", "", "","");
+    //this.client = new Client("", "", "");
     this.buysfororder = new Set<Buy>();
     //this.subscription = new Subscription();
     this.checks = { name: "Set All", set: true, subchecks: new Array<ICartBuy>() };
     this.allset = true;
-    this.order = new Order("", this.client, "", new Date(), OrderStatus.under_consideration, new Array<Buy>());
+   // this.order = new Order("", this.client, "", new Date(), OrderStatus.under_consideration, new Array<Buy>());
     this.isAuthorized = this.clientservice.checkAuthorize();
+   
   }
 
   ngOnInit() {
@@ -272,65 +273,49 @@ export class CartComponent implements OnInit {
 
   makeOrder() {
 
-    //if (this.client.name != "" && this.client.email!="") {
+    of({
+      login: sessionStorage.getItem('login'),
+      email: sessionStorage.getItem('email')
+    }).pipe(
 
-    //  if (this.buysfororder.size != 0) {
+      map((client: any) => {
 
-    //    this.accservice.postClient(this.client).pipe(
+        let loginclient = (client.login != '' && client.email != '') ? true : false;
+        if (!loginclient) { alert('Please sign in!'); return null; }
+        return new Client("", client.login, client.email);
 
-    //      map(client => {
+      }),
+      filter(client => client != null),
+      map((client) => {
 
-    //        this.order.client = client;
-    //        this.order.buys = Array.from(this.buysfororder);
-    //        this.order.buys.forEach(b => {
+        let order: Order = new Order(
+          "",
+          client as Client,
+          "",
+          new Date(),
+          OrderStatus.under_consideration,
+          Array.from(this.buysfororder));
+        return order;
+      }),
+      exhaustMap((order: Order) => this.orderservice.postOrder(order))
 
-    //          b.image.data = "";
+    ).subscribe({
+      next: (order => {
 
-    //        })
-    //        return this.order;
+        alert("Order successfully created! See information on your email");
+        this.cartservice.initBuys();
+        this.buysfororder = new Set();
+        this.cartservice.getListOfBuys();
+        this.allCost(false);
 
-    //      }),
+      }),
+      error: (error => {
 
-    //      exhaustMap(order => this.orderservice.postOrder(order))
+        alert('Something going wrong=((Please try one more or write mail about this error!');
+        console.log(error);
 
-    //    ).subscribe({
-    //      next: (order => {
-
-    //        console.log(order);
-    //        console.log("Заказ создан, подробности придут на указанный email");
-    //        alert("Заказ создан, подробности придут на указанный email");
-
-    //        this.clientservice.initBuys();
-    //        this.buysfororder = new Set();
-    //        this.clientservice.getListOfBuys();
-    //        this.allCost(false);
-
-
-    //      }),
-    //      error: (error => {
-
-    //        console.error(error);
-    //        alert("Что-то пошло не так=(((Заказ создан не был");
-
-    //      })
-
-    //    });
-
-    //  }
-    //  else {
-
-    //    console.log("У вас нет покупок");
-    //    alert("У вас нет покупок");
-
-    //  }
-
-    //}
-    //else {
-
-    //    console.log("Заполните поля клиента");
-    //    alert("Заполните поля клиента");
-
-    //}
+      })
+    });
 
   }
    

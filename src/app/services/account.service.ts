@@ -33,7 +33,8 @@ export class AccountService {
 
   deleteClient(id: string): Observable<any> {
 
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
+    let token: string = sessionStorage.getItem('access_token') || '';
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json", "Authorization": token });
     return this.httpclient.delete<any>(this.url + `/${id}`, { observe: "body", headers: httpheaders, responseType: "json" });
 
   }

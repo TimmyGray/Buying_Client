@@ -14,21 +14,24 @@ export class OrderService {
 
   getOrders(clientName: string): Observable<Order[]> {
 
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
+    let token: string = sessionStorage.getItem('access_token') || '';
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json", "Authorization": token });
     return this.httpclient.get<Order[]>(this.url + `/${clientName}`, { observe: "body", headers: httpheaders });
 
   }
 
   getOrder(clientName: string, orderId: string):Observable<Order> {
 
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
+    let token: string = sessionStorage.getItem('access_token') || '';
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json", "Authorization": token });
     return this.httpclient.get<Order>(this.url + `/${clientName}/${orderId}`, { observe: "body", headers: httpheaders });
 
   }
 
   postOrder(order: Order): Observable<Order> {
 
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
+    let token: string = sessionStorage.getItem('access_token') || '';
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json", "Authorization": token });
     return this.httpclient.post<Order>(this.url, JSON.stringify(order), { headers: httpheaders });
 
   }
@@ -44,14 +47,17 @@ export class OrderService {
 
   putOrder(order: Order): Observable<Order> {
 
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
+    let token: string = sessionStorage.getItem('access_token') || '';
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json", "Authorization": token });
     return this.httpclient.put<Order>(this.url, JSON.stringify(order), { headers: httpheaders });
 
   }
 
   deleteOrder(orderId: string): Observable<any> {
 
-    return this.httpclient.delete<any>(this.url + `/${orderId}`);
+    let token: string = sessionStorage.getItem('access_token') || '';
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json", "Authorization": token });
+    return this.httpclient.delete<any>(this.url + `/${orderId}`, { headers: httpheaders });
 
   }
 
