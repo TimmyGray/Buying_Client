@@ -3,13 +3,15 @@ import { Client } from '../models/client';
 import { Buy } from '../models/Buy';
 import { Order } from '../models/order';
 import { OrderStatus } from '../models/enums';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription,of } from 'rxjs';
 import { map, switchMap, exhaustMap } from 'rxjs/operators';
 import { CartService } from '../services/cart.service';
 import { ICartBuy } from '../models/cartbuy.interface';
 import { OrderService } from '../services/order.service';
 import { AccountService } from '../services/account.service';
 import { ParsingService } from '../services/parsing.service';
+import { ClientsIndentityService } from '../services/clients_indentity.service';
+import { FormControl, Form, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: "app-cart",
@@ -19,7 +21,7 @@ import { ParsingService } from '../services/parsing.service';
 })
 export class CartComponent implements OnInit {
 
-  //private subscription: Subscription;
+  loginForm!: FormGroup;
   client: Client;
   cost: number = 0;
   buysfororder: Set<Buy>;
@@ -27,25 +29,33 @@ export class CartComponent implements OnInit {
 
   allset: boolean;
   checks: ICartBuy;
+  isAuthorized: boolean = false;
+  hide: boolean = true;
+
+  logInfo: any = {
+    login: '',
+    password:''
+  }
 
   constructor(
-    private readonly clientservice: CartService,
+    private readonly cartservice: CartService,
     private readonly orderservice: OrderService,
-    private readonly accservice: AccountService,
-    private readonly parsingservice: ParsingService) {
+    private readonly accountservice: AccountService,
+    private readonly parsingservice: ParsingService,
+    private readonly clientservice: ClientsIndentityService) {
     this.client = new Client("", "", "","");
     this.buysfororder = new Set<Buy>();
     //this.subscription = new Subscription();
     this.checks = { name: "Set All", set: true, subchecks: new Array<ICartBuy>() };
     this.allset = true;
     this.order = new Order("", this.client, "", new Date(), OrderStatus.under_consideration, new Array<Buy>());
-    
+    this.isAuthorized = this.clientservice.checkAuthorize();
   }
 
   ngOnInit() {
 
-    this.buysfororder = this.clientservice.getListOfBuys();
-    this.clientservice.showBuys(Array.from(this.buysfororder));
+    this.buysfororder = this.cartservice.getListOfBuys();
+    this.cartservice.showBuys(Array.from(this.buysfororder));
 
     this.allCost(true);
 
@@ -53,8 +63,18 @@ export class CartComponent implements OnInit {
 
       this.checks.subchecks?.push({ name: "", set: true, subchecks: new Array<ICartBuy>() })
 
-    })
+    });
 
+    this.clientservice.isAuthorized$.subscribe({
+      next: (auth: boolean) => {
+        this.isAuthorized = auth;
+      }
+    });
+
+    this.loginForm = new FormGroup({
+      emailOrLogin: new FormControl(this.logInfo.emailOrLogin, [Validators.required]),
+      password: new FormControl(this.logInfo.password, [Validators.required])
+    });
 
   }
 
@@ -68,7 +88,7 @@ export class CartComponent implements OnInit {
   addOne(buy: Buy) {
     let newbuy: Buy = Object.assign({}, buy);
 
-    this.clientservice.addBuy(newbuy);
+    this.cartservice.addBuy(newbuy);
 
     this.Cost(buy, true);
 
@@ -78,7 +98,7 @@ export class CartComponent implements OnInit {
 
     let newbuy: Buy = Object.assign({}, buy);
 
-    this.clientservice.removeBuy(newbuy, false);
+    this.cartservice.removeBuy(newbuy, false);
 
     this.Cost(buy, false);
 
@@ -92,10 +112,9 @@ export class CartComponent implements OnInit {
 
     }
 
-    this.clientservice.removeBuy(buy, true);
+    this.cartservice.removeBuy(buy, true);
 
   }
-
 
   Cost(buy: Buy, checked: boolean) {
 
@@ -216,6 +235,39 @@ export class CartComponent implements OnInit {
     }
 
     return undefined;
+  }
+
+  get loginInfo() {
+    return {
+      emailOrLogin: this.loginForm.get('emailOrLogin'),
+      password: this.loginForm.get('password')
+    }
+
+  }
+
+  loginClient() {
+
+    of(this.logInfo).pipe(
+      map(logform => {
+        logform.emailOrLogin = this.loginInfo.emailOrLogin?.value;
+        logform.password = this.loginInfo.password?.value;
+      }),
+      exhaustMap(() => this.accountservice.login(this.logInfo))
+    ).subscribe({
+      next: (jwttoken: any) => {
+
+        this.clientservice.login(jwttoken);
+        console.log('Successful login');
+
+      },
+      error: (logerror: any) => {
+
+        alert(logerror.error);
+        console.log(logerror);
+
+      }
+    });
+
   }
 
   makeOrder() {

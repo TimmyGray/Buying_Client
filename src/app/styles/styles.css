@@ -161,7 +161,7 @@ body {
 .sticky-top-50{
 
     position:sticky;
-    top:50px;
+    top:20%;
 }
 
 .large-icon{
@@ -353,7 +353,7 @@ body {
 
    text-decoration:none;
    color:var(--main-blue);
-
+   cursor:pointer;
 }
 
 .round-corner{

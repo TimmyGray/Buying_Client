@@ -70,45 +70,58 @@
       </div>
     </div>
 
-    <div name="client"  fxFlex.xs="40%" class="light-grey-bg p-side-2 sticky-top-50 round-corner" >
-      <form>
+    <div name="client" fxFlex.xs="40%" class="light-grey-bg p-side-2 sticky-top-50 round-corner">
+      <form *ngIf="!isAuthorized" [formGroup]="loginForm">
         <div fxFlex>
           <div fxLayoutAlign.lt-xs="space-around">
             <mat-form-field fxFlex.xs="60%">
               <mat-label>Enter your login/email</mat-label>
-              <input matInput type="text" [(ngModel)]="client.login" name="clientName" />
-              <button mat-icon-button matSuffix *ngIf="client.login" (click)="client.login=''">
-                <mat-icon>close</mat-icon>
-              </button>
+              <input
+                     matInput
+                     type="text"
+                     formControlName="emailOrLogin"
+                     required/>
+              <mat-error *ngIf="loginInfo.emailOrLogin?.hasError('required')
+                              &&(loginInfo.emailOrLogin?.dirty||loginInfo.emailOrLogin?.touched)">
+              Email or login is required
+              </mat-error>
             </mat-form-field>
 
           </div>
-          <div fxLayoutAlign.lt-xs ="space-around" class="mg-b-1">
+          <div fxLayoutAlign.lt-xs="space-around" class="mg-b-1">
             <mat-form-field fxFlex.xs="60%">
               <mat-label>Enter your password</mat-label>
-              <input matInput type="email" [(ngModel)]="client.email" name="clientEmail" />
-              <button mat-icon-button matSuffix *ngIf="client.email" (click)="client.email=''">
-                <mat-icon>close</mat-icon>
+              <input matInput
+                     [type]="(hide)?'password':'text'"
+                     formControlName="password"
+                     required/>
+              <button mat-icon-button matSuffix (click)="hide=!hide">
+                <mat-icon>{{(hide)?'visibility':'visibility_off'}}</mat-icon>
               </button>
+              <mat-error *ngIf="loginInfo.password?.hasError('required')
+                         &&(loginInfo.password?.dirty||loginInfo.password?.touched)">
+              Password is required
+              </mat-error>
               <mat-hint><a class="link" href="#">forget your password?</a></mat-hint>
             </mat-form-field>
 
           </div>
-          <div fxLayout="column" class="width-100-procent mg-b-1">
-            <button mat-flat-button color="accent">Login</button>
-          </div>
-
-          <div name="cost show">
-            <div class="mat-title">Preliminery cost:{{cost | currency}}</div>
-          </div>
-
-          <div name="button" fxLayout="column" class="p-b-1 width-100-procent">
-            <button mat-raised-button color="primary" (click)="makeOrder()">Make order</button>
-          </div>
-
 
         </div>
       </form>
+      <div *ngIf="!isAuthorized" fxLayout="column" class="width-100-procent mg-b-1">
+        <button mat-flat-button color="accent" [disabled]="loginForm.invalid" (click)="loginClient()">Login</button>
+      </div>
+
+
+      <div name="cost show">
+        <div class="mat-title">Preliminery cost:{{cost | currency}}</div>
+      </div>
+
+      <div name="button" fxLayout="column" class="p-b-1 width-100-procent">
+        <button mat-raised-button color="primary" [disabled]="!isAuthorized" (click)="makeOrder()">Make order</button>
+      </div>
+
     </div>
   </div>
 

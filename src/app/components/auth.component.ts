@@ -55,7 +55,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.loginForm = new FormGroup({
       emailOrLogin: new FormControl(this.logInfo.emailOrLogin, [Validators.required]),
       password: new FormControl(this.logInfo.password, [Validators.required])
-    })
+    });
 
     this.route.paramMap.pipe(
 

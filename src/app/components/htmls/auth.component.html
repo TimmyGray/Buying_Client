@@ -81,7 +81,7 @@
                  || registrationInfo.password?.touched)">Password and confirm password must be equal</mat-error>
     </div>
 
-    <div class="mat-caption like-btn" (click)="isRegistration=!isRegistration"><a class="link">Already registered?</a></div>
+    <div class="mat-caption" (click)="isRegistration=!isRegistration"><a class="link">Already registered?</a></div>
     <div fxLayout="row" fxLayoutAlign="center center" class="mg-t-1">
       <div class="mg-r-1">
         <button [disabled]="registrationForm.invalid" mat-raised-button color="primary" (click)="registerClient()">Register</button>
