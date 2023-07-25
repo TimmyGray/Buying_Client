@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from '../components/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout'
@@ -17,6 +17,7 @@ import { ScrollDirective } from '../directives/scroll.directive';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CheckPageDirective } from '../directives/check-page.directive';
 import { AddRemDirective } from '../directives/addrem.directive';
+//import { JwtTokenInterceptor } from '../interceptors/jwt_token.interceptor';
 
 @NgModule({
   declarations: [
@@ -43,8 +44,8 @@ import { AddRemDirective } from '../directives/addrem.directive';
     ScrollingModule,
     ReactiveFormsModule
   ],
-  entryComponents:[FullDescriptionComponent],
-  providers: [],
+  entryComponents: [FullDescriptionComponent],
+ // providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi:true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

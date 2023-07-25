@@ -9,6 +9,8 @@ export class ClientsIndentityService {
   public isAuthorized$: Observable<boolean> = this.isAuthorized.asObservable();
 
   constructor() {
+    let token = sessionStorage.getItem('access_token');
+    (token) ? (this.getExpirationTime(token) < 0 ? this.removeJwt() : undefined) : undefined;
     this.isAuthorized.next(this.checkAuthorize());
   }
 
@@ -16,7 +18,7 @@ export class ClientsIndentityService {
     var check = (sessionStorage.getItem('access_token') != null
       && sessionStorage.getItem('email') != null
       && sessionStorage.getItem('login') != null) ? true : false;
-    console.log(check);
+
     return check;
 
   }
@@ -41,7 +43,7 @@ export class ClientsIndentityService {
       sessionStorage.setItem('access_token', jwt_token.access_token);
       sessionStorage.setItem('login', jwt_token.login);
       sessionStorage.setItem('email', jwt_token.email);
-
+      setTimeout(() => { this.logout(); console.log('token expired!'); }, this.getExpirationTime(jwt_token.access_token));
     }
     catch {
 
@@ -63,4 +65,12 @@ export class ClientsIndentityService {
     sessionStorage.removeItem('email');
 
   }
+
+  getExpirationTime(token:string) {
+
+    let exptime = JSON.parse(atob(token.split('.')[1]));
+    return exptime.exp * 1000 - new Date().getTime();
+
+  }
+
 }
