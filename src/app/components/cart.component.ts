@@ -282,11 +282,12 @@ export class CartComponent implements OnInit {
 
         let loginclient = (client.login != '' && client.email != '') ? true : false;
         if (!loginclient) { alert('Please sign in!'); return null; }
-        return new Client("", client.login, client.email);
+        return new Client("", client.login, client.email,"");
 
       }),
       filter(client => client != null),
       map((client) => {
+
 
         let order: Order = new Order(
           "",
@@ -295,6 +296,8 @@ export class CartComponent implements OnInit {
           new Date(),
           OrderStatus.under_consideration,
           Array.from(this.buysfororder));
+        order.buys.map(b => b.image.data = "");
+
         return order;
       }),
       exhaustMap((order: Order) => this.orderservice.postOrder(order))

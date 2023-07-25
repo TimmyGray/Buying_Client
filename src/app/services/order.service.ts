@@ -31,7 +31,7 @@ export class OrderService {
   postOrder(order: Order): Observable<Order> {
 
     let token: string = sessionStorage.getItem('access_token') || '';
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json", "Authorization": token });
+    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json", "Authorization": `Bearer ${token}` });
     return this.httpclient.post<Order>(this.url, JSON.stringify(order), { headers: httpheaders });
 
   }
