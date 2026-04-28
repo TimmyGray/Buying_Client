@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { observable, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { Client } from "../models/client";
 import { environment } from '../../environments/environment';
 
@@ -17,10 +17,10 @@ export class AccountService {
 
   }
 
-  postClient(newClieent: Client): Observable<Client> {
+  postClient(newClient: Client): Observable<Client> {
 
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json"});
-    return this.httpclient.post<Client>(this.url, JSON.stringify(newClieent), { headers: httpheaders });
+    const payload = { id: newClient.id, name: newClient.name, email: newClient.email };
+    return this.httpclient.post<Client>(this.url, payload);
 
   }
 

@@ -3,7 +3,7 @@ import { Connector } from './connector'
 export class Wire {
 
   constructor(
-    public _id: string,
+    public id: string,
     public name: string,
     public length: number,
     public type: string,

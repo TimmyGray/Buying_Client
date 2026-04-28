@@ -8,10 +8,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './htmls/app.component.html',
-  styleUrls: ['../styles/app.component.css'],
-  providers: [BuyService]
+    selector: 'app-root',
+    templateUrl: './htmls/app.component.html',
+    styleUrls: ['../styles/app.component.css'],
+    providers: [BuyService],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   

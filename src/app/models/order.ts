@@ -5,7 +5,7 @@ import { Buy } from './Buy';
 export class Order {
 
   constructor(
-    public _id: string,
+    public id: string,
     public client: Client,
     public name: string,
     public created: Date,

@@ -1,9 +1,8 @@
 import { Directive,ElementRef,Renderer2,HostListener,HostBinding, Input } from '@angular/core';
 
 @Directive({
-
-  selector: '[addrem]'
-
+    selector: '[addrem]',
+    standalone: false
 })
 export class AddRemDirective {
 

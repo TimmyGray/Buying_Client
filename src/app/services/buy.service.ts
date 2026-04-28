@@ -1,7 +1,6 @@
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators'
+import { Observable, map } from 'rxjs';
 import { Buy } from '../models/Buy';
 import { environment } from '../../environments/environment';
 
@@ -12,19 +11,23 @@ export class BuyService {
   constructor(private client: HttpClient) { }
 
   getBuys(): Observable<Buy[]> {
-
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    return this.client.get<Buy[]>(this.url, { headers, observe: "body", responseType: "json" });
+    return this.client.get<Buy[]>(this.url).pipe(
+      map((buys) =>
+        buys.map((buy) => ({
+          ...buy,
+          itemId: buy.itemId ?? (buy as Buy & { itemid?: string }).itemid ?? '',
+          image: {
+            ...buy.image,
+            data: buy.image?.data ?? '',
+          },
+        }))
+      )
+    );
 
   }
 
-  getImage(id: string,type:string): Observable<Blob> {
-
-    console.log(id);
-    console.log(type);
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": `image/${type}` });
-    return this.client.get(`${this.url}/getimage/${id}`, { headers: httpheaders, responseType: "blob" });
+  getImage(id: string): Observable<Blob> {
+    return this.client.get(`${this.url}/image/${id}`, { responseType: "blob" });
 
   }
 

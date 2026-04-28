@@ -2,8 +2,8 @@ import { Directive,Renderer2,HostListener,ElementRef, OnInit } from "@angular/co
 
 
 @Directive({
-  selector:"[scroll]"
-
+    selector: "[scroll]",
+    standalone: false
 })
 
 export class ScrollDirective implements OnInit {

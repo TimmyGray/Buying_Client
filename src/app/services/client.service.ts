@@ -57,7 +57,7 @@ export class ClientService {
 
       this.listofbuys.forEach(sb => {
 
-        if (sb._id == buy._id) {
+        if (sb.id == buy.id) {
 
           has = true;
           sb.count++;
@@ -76,7 +76,7 @@ export class ClientService {
 
     this.listofbuys.forEach(sb => {
 
-      console.log(`listofbuys:${sb._id}\n${sb.name}\n${sb.count}`);
+      console.log(`listofbuys:${sb.id}\n${sb.name}\n${sb.count}`);
 
     })
    
@@ -105,7 +105,7 @@ export class ClientService {
 
         this.listofbuys.forEach(sb => {
          
-          if (sb._id == buy._id) {
+          if (sb.id == buy.id) {
 
             if (sb.count != 0) {
 
