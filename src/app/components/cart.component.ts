@@ -47,9 +47,9 @@ export class CartComponent implements OnInit {
     this.buysfororder = this.clientservice.getListOfBuys();
     this.allCost(true);
 
-    this.buysfororder.forEach(() => {
+    this.buysfororder.forEach((buy) => {
 
-      this.checks.subchecks?.push({ name: "", set: true, subchecks: new Array<ICartBuy>() });
+      this.checks.subchecks?.push({ name: buy.id, set: true, subchecks: new Array<ICartBuy>() });
 
     });
 
@@ -271,16 +271,17 @@ export class CartComponent implements OnInit {
   }
 
   private getSelectedBuys(): Buy[] {
-    const buys = Array.from(this.buysfororder);
-    return buys.filter((_, index) => this.checks.subchecks?.[index]?.set ?? true);
+    const selectedById = new Map((this.checks.subchecks ?? []).map((check) => [check.name, check.set]));
+    return Array.from(this.buysfororder).filter((buy) => selectedById.get(buy.id) ?? true);
   }
 
   private syncChecks(): void {
-    this.checks.subchecks = Array.from(this.buysfororder).map((_, index) => this.checks.subchecks?.[index] ?? {
-      name: '',
-      set: true,
+    const existingById = new Map((this.checks.subchecks ?? []).map((check) => [check.name, check.set]));
+    this.checks.subchecks = Array.from(this.buysfororder).map((buy) => ({
+      name: buy.id,
+      set: existingById.get(buy.id) ?? true,
       subchecks: [],
-    });
+    }));
     this.allset = this.checks.subchecks.every((check) => check.set);
   }
    

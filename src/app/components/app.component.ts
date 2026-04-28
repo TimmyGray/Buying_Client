@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ClientService } from '../services/client.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,7 +14,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   count: number = 0;
   cost: number = 0;
-  readonly body: HTMLElement = document.body;
+  readonly body: HTMLElement;
   private readonly destroy$ = new Subject<void>();
 
   private getCount(count: number) {
@@ -39,7 +40,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   }
   constructor(
-    private readonly clientsevice: ClientService) { }  
+    private readonly clientsevice: ClientService,
+    @Inject(DOCUMENT) documentRef: Document) {
+    this.body = documentRef.body;
+  }  
 
   clickOnLink() {
 
