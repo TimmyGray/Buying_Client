@@ -225,10 +225,11 @@ export class CartComponent implements OnInit {
         this.accservice.postClient(this.client).pipe(
 
           map(client => {
-
-            this.order.client = client;
-            this.order.buys = selectedBuys;
-            return this.order;
+            return {
+              ...this.order,
+              client,
+              buys: selectedBuys,
+            };
 
           }),
 

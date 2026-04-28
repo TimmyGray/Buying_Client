@@ -27,7 +27,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private fullprice: Subject<number> = new Subject<number>();
   fullprice$ = this.fullprice.asObservable();
-  addtocart$: Subscription | undefined;
+  addToCart$: Subscription | undefined;
 
   newBuy: Buy;
   wire: Wire;
@@ -84,7 +84,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     
 
-    //this.addtocart$ = fromEvent(this.addbut as HTMLElement, 'click').pipe(
+    //this.addToCart$ = fromEvent(this.addbut as HTMLElement, 'click').pipe(
 
     //  map(() => {
     //    if (this.newBuy.name == "") {
@@ -122,7 +122,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
 
-    this.addtocart$?.unsubscribe();
+    this.addToCart$?.unsubscribe();
     this.fullprice.complete();
 
   }
