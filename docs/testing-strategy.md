@@ -16,8 +16,10 @@ flowchart BT
   - delimiter parsing behavior
 - `src/app/services/client.service.spec.ts`
   - add/merge/remove cart state behavior
+  - bulk remove by id when payload object identity differs
 - `src/app/services/buy.service.spec.ts`
   - buys endpoint call + image endpoint route + legacy field mapping
+  - defensive fallback for invalid backend payload shapes
 - `src/app/services/order.service.spec.ts`
   - order posting payload sanitization
 - `src/app/components/app.component.spec.ts`

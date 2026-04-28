@@ -30,8 +30,6 @@ export class CheckPageDirective implements OnInit {
   }
 
   constructor(private elref: ElementRef, private renderer: Renderer2) {
-    console.log(document.body.clientHeight);
-    console.log(document.body.scrollHeight);
     if (document.body.clientHeight == document.body.scrollHeight) {
 
       this.fixed = true;

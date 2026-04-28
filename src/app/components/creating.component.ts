@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,ElementRef,AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit,ViewChild,AfterViewInit, OnDestroy } from '@angular/core';
 import { Buy } from '../models/Buy';
 import { CoreNumber } from '../models/enums';
 import { Price } from '../models/price';
@@ -11,8 +11,7 @@ import { Iitem } from '../models/item.interface';
 import { ClientService } from '../services/client.service';
 import { Image } from '../models/image';
 import { Coil } from '../models/coil';
-import { exhaustMap, filter, from, fromEvent, map,of, Observable, Subject, Subscription } from 'rxjs';
-import { MatSelect } from '@angular/material/select';
+import { Subject, Subscription } from 'rxjs';
 import { MatButton } from '@angular/material/button';
 
 
@@ -28,7 +27,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private fullprice: Subject<number> = new Subject<number>();
   fullprice$ = this.fullprice.asObservable();
-  addtocart$: Subscription | undefined;
+  addToCart$: Subscription | undefined;
 
   newBuy: Buy;
   wire: Wire;
@@ -44,6 +43,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
   curnumber: number = 0;
   allgood: boolean = true;
   addbut: HTMLElement|null;
+  statusMessage: string = '';
 
   connectors: Connector[];
   firstsideconn: Connector[];
@@ -84,7 +84,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     
 
-    //this.addtocart$ = fromEvent(this.addbut as HTMLElement, 'click').pipe(
+    //this.addToCart$ = fromEvent(this.addbut as HTMLElement, 'click').pipe(
 
     //  map(() => {
     //    if (this.newBuy.name == "") {
@@ -122,7 +122,8 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
 
-    this.fullprice.unsubscribe();
+    this.addToCart$?.unsubscribe();
+    this.fullprice.complete();
 
   }
 
@@ -168,8 +169,6 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.connectorserv.getConnectors().subscribe({
       next: ((connectors) => {
-
-        console.log(connectors);
         this.connectors = connectors;
 
       }),
@@ -187,8 +186,6 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.priceserv.getPrices().subscribe({
       next: ((prices) => {
-
-        console.log(prices);
         this.prices = prices;
 
       }),
@@ -207,8 +204,6 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.coilserv.getCoils().subscribe({
       next: ((coils) => {
-
-        console.log(coils);
         this.coils = coils;
 
       }),
@@ -246,16 +241,17 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   checkAllgood():boolean {
+    this.statusMessage = '';
 
     if (this.wire.numberofconnectors <= 0) {
-      console.log("Must be more than 0 connectors");
+      this.statusMessage = 'Количество коннекторов должно быть больше 0.';
       return true;
     }
 
     for (let conn of this.wire.firstconn) {
 
       if (conn.id == "") {
-        console.log("Not of all first side connectors selected")
+        this.statusMessage = 'Выберите все коннекторы первой стороны.';
         return true;
       }
 
@@ -264,7 +260,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
     for (let conn of this.wire.secondconn) {
 
       if (conn.id == "") {
-        console.log("Not of all second side connectors selected")
+        this.statusMessage = 'Выберите все коннекторы второй стороны.';
         return true;
       }
 
@@ -404,17 +400,15 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     item = array1.toString() + ";" + array2.toString() + ";" + `${coil.name}-${coil.type};` + `${wire.length}`;
 
-    console.log(item);
-
-
     return item;
 
   }
 
-  addToCart(event: Event) {
+  addToCart(_event: Event) {
+    this.statusMessage = '';
 
     if (this.newBuy.name == "") {
-      alert("You must fill name field");
+      this.statusMessage = 'Заполните название.';
       return;
     }
 

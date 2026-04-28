@@ -37,4 +37,13 @@ describe('ClientService', () => {
 
     expect(service.getListOfBuys().size).toBe(0);
   });
+
+  it('should remove all counts by id even when deleteAll buy instance is different', () => {
+    service.addBuy(createBuy('1', 15));
+    service.addBuy(createBuy('1', 15));
+
+    service.removeBuy(createBuy('1', 15), true);
+
+    expect(service.getListOfBuys().size).toBe(0);
+  });
 });

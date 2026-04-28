@@ -34,6 +34,9 @@
 </div>
 
 <div class="mg-t-2">
+  <div *ngIf="statusMessage" class="text-center">
+    <small>{{statusMessage}}</small>
+  </div>
 
   <div fxLayout="row wrap" class="center-xs" fxLayoutAlign="space-evenly" fxLayoutGap="20px" fxLayout.xs="column" >
 

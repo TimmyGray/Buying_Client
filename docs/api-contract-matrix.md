@@ -28,6 +28,8 @@
 ## Known compatibility handling
 
 - Buy service maps legacy `itemid` payloads into modern `itemId`.
+- Buy service defensively normalizes partial/invalid buy payloads into safe defaults.
 - Image download now uses backend v2 route format (`/image/{id}`).
 - Order posting sanitizes image byte payload in line items to avoid large/invalid request bodies.
+- Cart order submission now posts only user-selected line items.
 - `OrderStatus` enum values in frontend now match backend naming semantics.

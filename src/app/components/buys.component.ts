@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Buy } from '../models/Buy';
 import { FullDescriptionComponent } from '../components/fulldescription.component';
-import { config, from, map, Subscription, switchMap, of, take, Observable, delay, exhaustMap, switchAll, concatMap } from 'rxjs';
+import { from, map, switchMap, concatMap } from 'rxjs';
 import { BuyService } from '../services/buy.service';
 import { ClientService } from '../services/client.service';
 import { ParsingService } from '../services/parsing.service';
@@ -19,6 +19,7 @@ export class BuysComponent implements OnInit {
   listofimages: string[];
   displaybut: string = "none";
   parseitem: string[];
+  statusMessage: string = '';
 
   constructor(
     public dialog: MatDialog,
@@ -89,8 +90,6 @@ export class BuysComponent implements OnInit {
   addToCart(buy: Buy): void {
 
     let buytocart: Buy = Object.assign({}, buy);
-    console.log(`buy to add - ${buytocart.id}, count - ${buytocart.count}`);
-
     this.clientservice.addBuy(buytocart);
     
     
@@ -99,7 +98,6 @@ export class BuysComponent implements OnInit {
   removeFromCart(buy: Buy): void {
 
     let removefromcart: Buy = Object.assign({}, buy);
-    console.log(`buy to remove - ${removefromcart.id}`);
 
     this.clientservice.removeBuy(removefromcart, false);
 
@@ -126,8 +124,8 @@ export class BuysComponent implements OnInit {
       this.listofbuys[this.listofimages.length - 1].image.data = imagereader.result as string;
 
     });
-    imagereader.onerror = (e => {
-      console.error(e);
+    imagereader.onerror = (_e => {
+      this.statusMessage = 'Не удалось загрузить изображение.';
 
     });
 

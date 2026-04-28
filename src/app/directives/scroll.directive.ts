@@ -15,7 +15,6 @@ export class ScrollDirective implements OnInit {
   isFixed: boolean = true;
   scrolling(s:any) {
     let sc = s.target.scrollingElement.scrollTop;
-    console.log();
     if (sc >= 100) { this.isFixed = true }
     else { this.isFixed = false }
   }
