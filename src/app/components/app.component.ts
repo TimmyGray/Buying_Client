@@ -7,7 +7,6 @@ import { takeUntil } from 'rxjs/operators';
     selector: 'app-root',
     templateUrl: './htmls/app.component.html',
     styleUrls: ['../styles/app.component.css'],
-    providers: [BuyService],
     standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
