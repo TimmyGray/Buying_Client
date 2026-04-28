@@ -12,6 +12,7 @@ export class OrderService {
 
   constructor(private httpclient: HttpClient) { }
 
+  /** Gets all orders for a specific client id. */
   getOrders(clientId: string): Observable<Order[]> {
 
     const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
@@ -19,6 +20,7 @@ export class OrderService {
 
   }
 
+  /** Gets one order by client id and order id. */
   getOrder(clientId: string, orderId: string):Observable<Order> {
 
     const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
@@ -26,6 +28,7 @@ export class OrderService {
 
   }
 
+  /** Creates a new order and strips image data payload from order lines before sending. */
   postOrder(order: Order): Observable<Order> {
     const payload = {
       ...order,
@@ -44,12 +47,14 @@ export class OrderService {
 
   //service methods(only for develop)
 
+  /** Updates an existing order in the backend. */
   putOrder(order: Order): Observable<Order> {
 
     return this.httpclient.put<Order>(this.url, order);
 
   }
 
+  /** Deletes an order by its id. */
   deleteOrder(orderId: string): Observable<any> {
 
     return this.httpclient.delete<any>(this.url + `/${orderId}`);

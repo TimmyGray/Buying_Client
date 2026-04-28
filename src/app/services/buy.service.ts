@@ -10,6 +10,7 @@ export class BuyService {
   private url: string = environment.apiUrl+"/buys";
   constructor(private client: HttpClient) { }
 
+  /** Loads catalogue buys and normalizes legacy payload fields from backend responses. */
   getBuys(): Observable<Buy[]> {
     return this.client.get<Buy[]>(this.url).pipe(
       map((buys) =>
@@ -26,6 +27,7 @@ export class BuyService {
 
   }
 
+  /** Downloads a buy image binary payload from the backend image endpoint. */
   getImage(id: string): Observable<Blob> {
     return this.client.get(`${this.url}/image/${id}`, { responseType: "blob" });
 

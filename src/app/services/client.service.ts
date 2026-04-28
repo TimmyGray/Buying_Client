@@ -28,6 +28,7 @@ export class ClientService {
     console.log(`root`);
   }
 
+  /** Emits cart counters and the latest changed buy to subscribed UI components. */
   private changeBuy(buy: Buy, num: number, price: number) {
 
     this.count.next(num);
@@ -39,6 +40,7 @@ export class ClientService {
     console.log(`after change ${buy}\n${num}\n${price}`);
   }
 
+  /** Adds a buy to the cart, merging quantity when an item with the same id already exists. */
   public addBuy(buy: Buy) {
 
 
@@ -88,6 +90,7 @@ export class ClientService {
 
   }
 
+  /** Removes one or all instances of a buy from the cart and recalculates aggregate totals. */
   public removeBuy(buy: Buy, deleteall: boolean) {
 
     if (this.curcount > 0) {
@@ -139,12 +142,14 @@ export class ClientService {
 
   }
 
+  /** Returns the in-memory cart state used by UI components. */
   getListOfBuys(): Set<Buy> {
 
     return this.listofbuys;
 
   }
 
+  /** Clears cart state and resets public counter streams to zero. */
   initBuys() {
 
     this.listofbuys = new Set<Buy>();
@@ -166,4 +171,3 @@ export class ClientService {
   }
 
 }
-
