@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { observable, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { Client } from "../models/client";
 import { environment } from '../../environments/environment';
 
@@ -10,6 +10,7 @@ export class AccountService {
   private readonly url: string = environment.apiUrl+"/clients";
   constructor(private readonly httpclient: HttpClient) { }
 
+  /** Loads a client by id. */
   getClient(id: string): Observable<Client> {
 
     const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });
@@ -17,13 +18,15 @@ export class AccountService {
 
   }
 
-  postClient(newClieent: Client): Observable<Client> {
+  /** Creates or upserts a client using backend contract fields. */
+  postClient(client: Client): Observable<Client> {
 
-    const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json"});
-    return this.httpclient.post<Client>(this.url, JSON.stringify(newClieent), { headers: httpheaders });
+    const payload = { id: client.id, name: client.name, email: client.email };
+    return this.httpclient.post<Client>(this.url, payload);
 
   }
 
+  /** Deletes a client by id. */
   deleteClient(id: string): Observable<any> {
 
     const httpheaders: HttpHeaders = new HttpHeaders({ "Content-Type": "application/json" });

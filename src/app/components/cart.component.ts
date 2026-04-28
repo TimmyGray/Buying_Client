@@ -12,10 +12,10 @@ import { AccountService } from '../services/account.service';
 import { ParsingService } from '../services/parsing.service';
 
 @Component({
-  selector: "app-cart",
-  templateUrl: `./htmls/cart.component.html`,
-  providers: [OrderService, AccountService]
-  
+    selector: "app-cart",
+    templateUrl: `./htmls/cart.component.html`,
+    providers: [OrderService, AccountService],
+    standalone: false
 })
 export class CartComponent implements OnInit {
 
@@ -38,7 +38,7 @@ export class CartComponent implements OnInit {
     //this.subscription = new Subscription();
     this.checks = { name: "Set All", set: true, subchecks: new Array<ICartBuy>() };
     this.allset = true;
-    this.order = new Order("", this.client, "", new Date(), OrderStatus.under_consideration, new Array<Buy>());
+    this.order = new Order("", this.client, "", new Date(), OrderStatus.UnderConsideration, new Array<Buy>());
     
   }
 
@@ -230,11 +230,6 @@ export class CartComponent implements OnInit {
 
             this.order.client = client;
             this.order.buys = Array.from(this.buysfororder);
-            this.order.buys.forEach(b => {
-
-              b.image.data = "";
-
-            })
             return this.order;
 
           }),

@@ -8,9 +8,10 @@ import { ClientService } from '../services/client.service';
 import { ParsingService } from '../services/parsing.service';
 
 @Component({
-  selector: 'app-buys',
-  templateUrl: `./htmls/buys.component.html`,
-  providers: [BuyService]
+    selector: 'app-buys',
+    templateUrl: `./htmls/buys.component.html`,
+    providers: [BuyService],
+    standalone: false
 })
 export class BuysComponent implements OnInit {
 
@@ -45,7 +46,7 @@ export class BuysComponent implements OnInit {
       }),
 
       switchMap(value => from(value)),
-      concatMap(value => this.buyservice.getImage(value.image._id, value.image.type))
+      concatMap(value => this.buyservice.getImage(value.image.id))
     
       
 
@@ -88,7 +89,7 @@ export class BuysComponent implements OnInit {
   addToCart(buy: Buy): void {
 
     let buytocart: Buy = Object.assign({}, buy);
-    console.log(`buy to add - ${buytocart._id}, count - ${buytocart.count}`);
+    console.log(`buy to add - ${buytocart.id}, count - ${buytocart.count}`);
 
     this.clientservice.addBuy(buytocart);
     
@@ -98,7 +99,7 @@ export class BuysComponent implements OnInit {
   removeFromCart(buy: Buy): void {
 
     let removefromcart: Buy = Object.assign({}, buy);
-    console.log(`buy to remove - ${removefromcart._id}`);
+    console.log(`buy to remove - ${removefromcart.id}`);
 
     this.clientservice.removeBuy(removefromcart, false);
 

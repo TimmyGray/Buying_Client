@@ -1,30 +1,47 @@
 import { TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Subject } from 'rxjs';
 import { AppComponent } from './app.component';
+import { ClientService } from '../services/client.service';
+import { MaterialModule } from '../modules/material.module';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
+  const count$ = new Subject<number>();
+  const price$ = new Subject<number>();
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
+      declarations: [AppComponent],
+      imports: [RouterTestingModule, MaterialModule, FlexLayoutModule, NoopAnimationsModule],
+      providers: [
+        { provide: ActivatedRoute, useValue: {} },
+        {
+          provide: ClientService,
+          useValue: {
+            count$: count$.asObservable(),
+            price$: price$.asObservable(),
+          },
+        },
       ],
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it('should create', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it(`should have as title 'Staff_buying_client'`, () => {
+  it('should update count and cost from client service streams', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-  });
+    fixture.componentInstance.ngOnInit();
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('Staff_buying_client app is running!');
+    count$.next(4);
+    price$.next(125.5);
+
+    expect(fixture.componentInstance.count).toBe(4);
+    expect(fixture.componentInstance.cost).toBe(125.5);
   });
 });

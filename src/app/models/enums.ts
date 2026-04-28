@@ -1,10 +1,10 @@
 import { from } from "rxjs";
 
 export enum OrderStatus {
-  under_consideration,
-  agree,
-  done,
-  canceled
+  UnderConsideration,
+  Agreed,
+  Done,
+  Canceled
 }
 
 export enum Connector {
@@ -63,5 +63,4 @@ for (var i = 0; i < connectors_prices.length; i++) {
   Connectors.set(connector, connectors_prices[i]);
 
 }
-
 

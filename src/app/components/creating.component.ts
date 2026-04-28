@@ -17,9 +17,10 @@ import { MatButton } from '@angular/material/button';
 
 
 @Component({
-  selector: 'app-creating',
-  templateUrl: `./htmls/creating.component.html`,
-  providers: [ConnetorService, PriceService, CoilService]
+    selector: 'app-creating',
+    templateUrl: `./htmls/creating.component.html`,
+    providers: [ConnetorService, PriceService, CoilService],
+    standalone: false
 })
 export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("addToCart", { static: false })
@@ -231,7 +232,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   findPrice(item: Iitem): number {
 
-    let price = this.prices.find(p => p.itemofprice._id == item._id)?.cost;
+    let price = this.prices.find(p => p.itemOfPrice.id == item.id)?.cost;
 
     if (price) {
 
@@ -253,7 +254,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     for (let conn of this.wire.firstconn) {
 
-      if (conn._id == "") {
+      if (conn.id == "") {
         console.log("Not of all first side connectors selected")
         return true;
       }
@@ -262,7 +263,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     for (let conn of this.wire.secondconn) {
 
-      if (conn._id == "") {
+      if (conn.id == "") {
         console.log("Not of all second side connectors selected")
         return true;
       }
@@ -357,7 +358,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
   changeCoil() {
 
     this.coilprice = this.findPrice(this.wirecoil) * this.wire.length;
-    if (this.wirecoil._id == '' || this.wire.length <= 0) {
+    if (this.wirecoil.id == '' || this.wire.length <= 0) {
       this.allgood = true;
     }
     this.changePrice();

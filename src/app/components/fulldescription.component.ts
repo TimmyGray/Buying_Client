@@ -4,10 +4,9 @@ import { ParsingService } from '../services/parsing.service';
 
 
 @Component({
-
-  selector: 'full-des',
-  templateUrl: `./htmls/fulldescription.component.html`
-
+    selector: 'full-des',
+    templateUrl: `./htmls/fulldescription.component.html`,
+    standalone: false
 })
 export class FullDescriptionComponent implements OnInit {
   ngOnInit(): void { }

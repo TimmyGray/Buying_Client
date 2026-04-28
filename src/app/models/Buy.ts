@@ -3,13 +3,14 @@ import {Image } from './image'
 export class Buy{
     
   constructor(
-    public _id: string,
+    public id: string,
     public name: string,
     public description: string,
     public cost: number,
     public item: string,
-    public itemid: string,
+    public itemId: string,
     public count: number,
-    public image:Image) { }
+    public image:Image,
+    public custom: boolean = false) { }
 
 }

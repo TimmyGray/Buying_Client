@@ -1,10 +1,8 @@
 import { Directive,ElementRef,Renderer2, OnInit,ViewChild, HostListener } from '@angular/core';
 
 @Directive({
-
-  selector: '[checkpage]'
-
-
+    selector: '[checkpage]',
+    standalone: false
 })
 export class CheckPageDirective implements OnInit {
 
