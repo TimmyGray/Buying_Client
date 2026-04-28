@@ -10,19 +10,30 @@ export class BuyService {
   private url: string = environment.apiUrl+"/buys";
   constructor(private client: HttpClient) { }
 
+  private normalizeBuy(raw: Partial<Buy>): Buy {
+    return {
+      id: raw.id ?? '',
+      name: raw.name ?? '',
+      description: raw.description ?? '',
+      cost: raw.cost ?? 0,
+      item: raw.item ?? '',
+      itemId: raw.itemId ?? (raw as Buy & { itemid?: string }).itemid ?? '',
+      count: raw.count ?? 0,
+      image: {
+        id: raw.image?.id ?? '',
+        name: raw.image?.name ?? '',
+        size: raw.image?.size ?? 0,
+        type: raw.image?.type ?? '',
+        data: raw.image?.data ?? '',
+      },
+      custom: raw.custom ?? false,
+    };
+  }
+
   /** Loads catalogue buys and normalizes legacy payload fields from backend responses. */
   getBuys(): Observable<Buy[]> {
-    return this.client.get<Buy[]>(this.url).pipe(
-      map((buys) =>
-        buys.map((buy) => ({
-          ...buy,
-          itemId: buy.itemId ?? (buy as Buy & { itemid?: string }).itemid ?? '',
-          image: {
-            ...buy.image,
-            data: buy.image?.data ?? '',
-          },
-        }))
-      )
+    return this.client.get<Buy[] | null>(this.url).pipe(
+      map((buys) => (Array.isArray(buys) ? buys : []).map((buy) => this.normalizeBuy(buy)))
     );
 
   }

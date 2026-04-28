@@ -1,11 +1,7 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, Renderer2, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Route, ParamMap, Params } from '@angular/router';
-import { CheckPageDirective } from '../directives/check-page.directive';
-import { BuyService } from '../services/buy.service';
-import { Buy } from '../models/Buy';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ClientService } from '../services/client.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -14,13 +10,13 @@ import { map } from 'rxjs/operators';
     providers: [BuyService],
     standalone: false
 })
-export class AppComponent implements OnInit {
-  
-  dtb: any;
-  url:any;
+export class AppComponent implements OnInit, OnDestroy {
+
   count: number = 0;
   cost: number = 0;
-  body: HTMLElement;
+  readonly body: HTMLElement = document.body;
+  private readonly destroy$ = new Subject<void>();
+
   private getCount(count: number) {
 
     this.count = count;
@@ -35,18 +31,16 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-    window.addEventListener('scroll', this.scrolling, true);
-    this.clientsevice.count$.subscribe((c: number) => this.getCount(c));
-    this.clientsevice.price$.subscribe((p: number) => this.getCost(p));
-  
+    this.clientsevice.count$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((c: number) => this.getCount(c));
+    this.clientsevice.price$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((p: number) => this.getCost(p));
+
   }
   constructor(
-    private readonly clientsevice: ClientService,
-    private readonly route: ActivatedRoute) {
-    console.log(this.route.component);
-    this.dtb = document.getElementById("dtb");
-    this.body = document.body;
-  }  
+    private readonly clientsevice: ClientService) { }  
 
   clickOnLink() {
 
@@ -55,33 +49,8 @@ export class AppComponent implements OnInit {
 
   }
 
-  scrolling(e: any) {
-
-    
-    let sc = e.target.scrollingElement.scrollTop;
-    let sh = e.target.scrollingElement.scrollHeight;
-    let ch = e.target.scrollingElement.clientHeight;
-    let endofpage = Math.abs(sh - ch - sc);
-    //console.log(`window scrolltop:${sc}`);
-    //console.log(`window scrollheight:${sh}`);
-    //console.log(`window clientheight:${ch}`);
-    //console.log(`toolbar clientheight:${(this.dtb as Element).clientHeight}`);
-    //console.log(`end_of_page:${endofpage}`);
-
-    if (sc == endofpage && sc == 0) {
-      
-
-    }
-    else {
-
-      if ((this.dtb as Element).classList.contains("fixedbot")) {
-
-       (this.dtb as Element).classList.remove('fixedbot');
-
-      }
-
-    }
-
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
-

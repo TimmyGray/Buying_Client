@@ -55,6 +55,9 @@ Update `apiUrl` to match your backend host.
 
 - Architecture and flows (Mermaid): `docs/architecture.md`
 - API contract matrix: `docs/api-contract-matrix.md`
+- Contract mismatch register: `docs/contract-mismatch-register.md`
+- Baseline snapshot: `docs/baseline-snapshot.md`
+- Frontend inventory: `docs/frontend-inventory.md`
 - Testing strategy and scope: `docs/testing-strategy.md`
 
 ## Notes

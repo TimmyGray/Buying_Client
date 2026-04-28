@@ -47,4 +47,14 @@ describe('BuyService', () => {
     const req = httpMock.expectOne(`${environment.apiUrl}/buys/image/abc`);
     expect(req.request.method).toBe('GET');
   });
+
+  it('should return empty array when backend payload is not an array', () => {
+    service.getBuys().subscribe((res) => {
+      expect(res).toEqual([]);
+    });
+
+    const req = httpMock.expectOne(`${environment.apiUrl}/buys`);
+    expect(req.request.method).toBe('GET');
+    req.flush({ unexpected: true });
+  });
 });

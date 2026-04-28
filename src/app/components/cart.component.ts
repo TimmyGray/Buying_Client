@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Client } from '../models/client';
 import { Buy } from '../models/Buy';
 import { Order } from '../models/order';
 import { OrderStatus } from '../models/enums';
-import { Observable, Subscription } from 'rxjs';
-import { map, switchMap, exhaustMap } from 'rxjs/operators';
+import { map, exhaustMap } from 'rxjs/operators';
 import { ClientService } from '../services/client.service';
 import { ICartBuy } from '../models/cartbuy.interface';
 import { OrderService } from '../services/order.service';
@@ -27,6 +26,7 @@ export class CartComponent implements OnInit {
 
   allset: boolean;
   checks: ICartBuy;
+  statusMessage: string = '';
 
   constructor(
     private readonly clientservice: ClientService,
@@ -45,15 +45,13 @@ export class CartComponent implements OnInit {
   ngOnInit() {
 
     this.buysfororder = this.clientservice.getListOfBuys();
-    this.clientservice.showBuys(Array.from(this.buysfororder));
-
     this.allCost(true);
 
     this.buysfororder.forEach(() => {
 
-      this.checks.subchecks?.push({ name: "", set: true, subchecks: new Array<ICartBuy>() })
+      this.checks.subchecks?.push({ name: "", set: true, subchecks: new Array<ICartBuy>() });
 
-    })
+    });
 
 
   }
@@ -93,6 +91,7 @@ export class CartComponent implements OnInit {
     }
 
     this.clientservice.removeBuy(buy, true);
+    this.syncChecks();
 
   }
 
@@ -147,8 +146,6 @@ export class CartComponent implements OnInit {
   }
 
   updateAll(newbuy: Buy, set: boolean) {
-    console.log(set);
-
     for (var i = 0; i < newbuy.count; i++) {
 
       this.Cost(newbuy, set);
@@ -159,8 +156,7 @@ export class CartComponent implements OnInit {
   }
 
   setAll(set: boolean) {
-    console.log(set);
-    this.allset = set
+    this.allset = set;
     this.allCost(set);
 
     if (this.checks.subchecks!=null) {
@@ -219,17 +215,19 @@ export class CartComponent implements OnInit {
   }
 
   makeOrder() {
+    this.statusMessage = '';
+    const selectedBuys = this.getSelectedBuys();
 
-    if (this.client.name != "" && this.client.email!="") {
+    if (this.client.name !== '' && this.client.email !== '') {
 
-      if (this.buysfororder.size != 0) {
+      if (selectedBuys.length !== 0) {
 
         this.accservice.postClient(this.client).pipe(
 
           map(client => {
 
             this.order.client = client;
-            this.order.buys = Array.from(this.buysfororder);
+            this.order.buys = selectedBuys;
             return this.order;
 
           }),
@@ -238,22 +236,21 @@ export class CartComponent implements OnInit {
 
         ).subscribe({
           next: (order => {
-
-            console.log(order);
-            console.log("Заказ создан, подробности придут на указанный email");
-            alert("Заказ создан, подробности придут на указанный email");
+            void order;
+            this.statusMessage = 'Заказ создан, подробности придут на указанный email';
 
             this.clientservice.initBuys();
             this.buysfororder = new Set();
             this.clientservice.getListOfBuys();
             this.allCost(false);
+            this.checks.subchecks = [];
 
 
           }),
           error: (error => {
 
-            console.error(error);
-            alert("Что-то пошло не так=(((Заказ создан не был");
+            void error;
+            this.statusMessage = 'Что-то пошло не так. Заказ создан не был.';
 
           })
 
@@ -262,19 +259,31 @@ export class CartComponent implements OnInit {
       }
       else {
 
-        console.log("У вас нет покупок");
-        alert("У вас нет покупок");
+        this.statusMessage = 'У вас нет выбранных покупок.';
 
       }
 
     }
     else {
 
-        console.log("Заполните поля клиента");
-        alert("Заполните поля клиента");
+        this.statusMessage = 'Заполните поля клиента.';
 
     }
 
+  }
+
+  private getSelectedBuys(): Buy[] {
+    const buys = Array.from(this.buysfororder);
+    return buys.filter((_, index) => this.checks.subchecks?.[index]?.set ?? true);
+  }
+
+  private syncChecks(): void {
+    this.checks.subchecks = Array.from(this.buysfororder).map((_, index) => this.checks.subchecks?.[index] ?? {
+      name: '',
+      set: true,
+      subchecks: [],
+    });
+    this.allset = this.checks.subchecks.every((check) => check.set);
   }
    
 }

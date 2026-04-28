@@ -102,6 +102,10 @@
             <button mat-raised-button color="primary" (click)="makeOrder()">Make order</button>
           </div>
 
+          <div *ngIf="statusMessage" name="status message">
+            <small>{{statusMessage}}</small>
+          </div>
+
 
         </div>
       </form>
@@ -113,7 +117,6 @@
 
   </div>-->
 </div>
-
 
 
 

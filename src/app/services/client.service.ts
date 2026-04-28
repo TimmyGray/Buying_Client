@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { count, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Buy } from '../models/Buy';
 
 
@@ -25,7 +25,6 @@ export class ClientService {
     this.listofbuys = new Set<Buy>();
     this.curcount = 0;
     this.curprice = 0;
-    console.log(`root`);
   }
 
   /** Emits cart counters and the latest changed buy to subscribed UI components. */
@@ -36,106 +35,55 @@ export class ClientService {
     this.price.next(price);
 
     this.changebuy.next(buy);
+  }
 
-    console.log(`after change ${buy}\n${num}\n${price}`);
+  private findBuyById(id: string): Buy | undefined {
+    return Array.from(this.listofbuys).find((buy) => buy.id === id);
   }
 
   /** Adds a buy to the cart, merging quantity when an item with the same id already exists. */
   public addBuy(buy: Buy) {
-
-
-    this.curcount ++;
-
+    this.curcount++;
     this.curprice += buy.cost;
+    const current = this.findBuyById(buy.id);
 
-    if (this.listofbuys.size == 0) {
-
+    if (current) {
+      current.count++;
+    } else {
       this.listofbuys.add(buy);
-
     }
-    else {
-
-      let has: boolean = false;
-
-      this.listofbuys.forEach(sb => {
-
-        if (sb.id == buy.id) {
-
-          has = true;
-          sb.count++;
-
-        }
-
-      });
-
-      if (!has) {
-
-        this.listofbuys.add(buy);
-
-      }
-
-    }
-
-    this.listofbuys.forEach(sb => {
-
-      console.log(`listofbuys:${sb.id}\n${sb.name}\n${sb.count}`);
-
-    })
-   
-    console.log(this.curcount);
-    console.log(this.curprice);
 
     this.changeBuy(buy, this.curcount, this.curprice);
-
-
   }
 
   /** Removes one or all instances of a buy from the cart and recalculates aggregate totals. */
   public removeBuy(buy: Buy, deleteall: boolean) {
+    if (this.curcount <= 0) {
+      return;
+    }
 
-    if (this.curcount > 0) {
-      console.log(`curcount before remove ${this.curcount}`);
-      if (deleteall) {
+    const current = this.findBuyById(buy.id);
+    if (!current) {
+      return;
+    }
 
-        while (buy.count!=0) {
+    if (deleteall) {
+      this.curcount -= current.count;
+      this.curprice -= current.cost * current.count;
+      this.listofbuys.delete(current);
+    } else if (current.count > 0) {
+      current.count--;
+      this.curcount--;
+      this.curprice -= current.cost;
 
-          console.log(`buy count:${buy.count}`);
-          this.removeBuy(buy, false);
-        }
-
-      }
-      else {
-
-        this.listofbuys.forEach(sb => {
-         
-          if (sb.id == buy.id) {
-
-            if (sb.count != 0) {
-
-              sb.count--;
-
-              if (sb.count == 0) {
-
-                this.listofbuys.delete(sb);
-
-              }
-
-              this.curcount--;
-
-              this.curprice -= buy.cost;
-
-              console.log(`current count - ${this.curcount}`);
-              console.log(`current price - ${this.curprice}`);
-
-            }
-            
-          }
-        });
-
-        this.changeBuy(buy, this.curcount, this.curprice);
-
+      if (current.count === 0) {
+        this.listofbuys.delete(current);
       }
     }
+
+    this.curcount = Math.max(0, this.curcount);
+    this.curprice = Math.max(0, this.curprice);
+    this.changeBuy(current, this.curcount, this.curprice);
   }
 
   getBuy(): void {
@@ -161,13 +109,7 @@ export class ClientService {
   }
 
   showBuys(list: Buy[]) {
-    console.log("Show Method");
-    list.forEach(b => {
-
-      console.log(`show:${b.name}\n${b.item}\n${b.description}\n${b.count}\n${b.cost}`);
-
-    });
-
+    void list;
   }
 
 }
