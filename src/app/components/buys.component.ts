@@ -124,8 +124,7 @@ export class BuysComponent implements OnInit {
       this.listofbuys[this.listofimages.length - 1].image.data = imagereader.result as string;
 
     });
-    imagereader.onerror = (e => {
-      void e;
+    imagereader.onerror = (_e => {
       this.statusMessage = 'Не удалось загрузить изображение.';
 
     });

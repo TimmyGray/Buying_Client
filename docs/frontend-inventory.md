@@ -14,7 +14,7 @@
 - `CreatingComponent` (`src/app/components/creating.component.ts`)
 - `CartComponent` (`src/app/components/cart.component.ts`)
 - `FullDescriptionComponent` (`src/app/components/fulldescription.component.ts`)
-- `NotFoundComponent` (`src/app/components/notfounf.component.ts`)
+- `NotFoundComponent` (`src/app/components/notfounf.component.ts`, legacy filename typo retained)
 
 ## Services
 
@@ -23,7 +23,7 @@
 - `OrderService`
 - `AccountService`
 - `PriceService`
-- `ConnetorService`
+- `ConnetorService` (legacy class spelling retained in codebase)
 - `CoilService`
 - `CreatingService`
 - `ParsingService`

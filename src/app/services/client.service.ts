@@ -108,8 +108,7 @@ export class ClientService {
 
   }
 
-  showBuys(list: Buy[]) {
-    void list;
+  showBuys(_list: Buy[]) {
   }
 
 }

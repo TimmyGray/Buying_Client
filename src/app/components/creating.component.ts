@@ -404,8 +404,7 @@ export class CreatingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  addToCart(event: Event) {
-    void event;
+  addToCart(_event: Event) {
     this.statusMessage = '';
 
     if (this.newBuy.name == "") {

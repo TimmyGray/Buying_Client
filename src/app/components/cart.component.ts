@@ -235,8 +235,7 @@ export class CartComponent implements OnInit {
           exhaustMap(order => this.orderservice.postOrder(order))
 
         ).subscribe({
-          next: (order => {
-            void order;
+          next: (() => {
             this.statusMessage = 'Заказ создан, подробности придут на указанный email';
 
             this.clientservice.initBuys();
@@ -247,9 +246,7 @@ export class CartComponent implements OnInit {
 
 
           }),
-          error: (error => {
-
-            void error;
+          error: ((_error) => {
             this.statusMessage = 'Что-то пошло не так. Заказ создан не был.';
 
           })
