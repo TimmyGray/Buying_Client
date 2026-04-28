@@ -23,7 +23,7 @@
 - `OrderService`
 - `AccountService`
 - `PriceService`
-- `ConnetorService` (legacy class spelling retained in codebase)
+- `ConnectorService` (`ConnetorService` legacy class spelling retained in codebase)
 - `CoilService`
 - `CreatingService`
 - `ParsingService`

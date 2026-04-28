@@ -41,7 +41,10 @@ export class BuyService {
   /** Loads catalogue buys and normalizes legacy payload fields from backend responses. */
   getBuys(): Observable<Buy[]> {
     return this.client.get<Buy[] | null>(this.url).pipe(
-      map((buys) => (Array.isArray(buys) ? buys : []).map((buy) => this.normalizeBuy(buy)))
+      map((buys) => {
+        const safeBuys = Array.isArray(buys) ? buys : [];
+        return safeBuys.map((buy) => this.normalizeBuy(buy));
+      })
     );
 
   }

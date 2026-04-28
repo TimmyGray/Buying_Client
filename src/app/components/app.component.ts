@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private readonly clientsevice: ClientService,
     @Inject(DOCUMENT) documentRef: Document) {
-    this.body = documentRef.body;
+    this.body = documentRef.body ?? documentRef.documentElement;
   }  
 
   clickOnLink() {
