@@ -10,6 +10,14 @@ export class BuyService {
   private url: string = environment.apiUrl+"/buys";
   constructor(private client: HttpClient) { }
 
+  /**
+   * Supports both modern `itemId` and legacy `itemid` payload names
+   * while backend contracts are being standardized.
+   */
+  private getItemId(raw: Partial<Buy>): string {
+    return raw.itemId ?? (raw as Buy & { itemid?: string }).itemid ?? '';
+  }
+
   private normalizeBuy(raw: Partial<Buy>): Buy {
     return {
       id: raw.id ?? '',
@@ -17,7 +25,7 @@ export class BuyService {
       description: raw.description ?? '',
       cost: raw.cost ?? 0,
       item: raw.item ?? '',
-      itemId: raw.itemId ?? (raw as Buy & { itemid?: string }).itemid ?? '',
+      itemId: this.getItemId(raw),
       count: raw.count ?? 0,
       image: {
         id: raw.image?.id ?? '',
